@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test MP+dmb.ish+addr-tlbi-dsb.ish-isb</title>
+</head>
+<body>
+
+<h3><a id="tst@onetwo-more-MP+dmb.ish+addr-tlbi-dsb.ish-isb">Test</a> <a href="onetwo-more-src/MP+dmb.ish+addr-tlbi-dsb.ish-isb.litmus">MP+dmb.ish+addr-tlbi-dsb.ish-isb</a></h3>
+<img src="onetwo-more-img/MP+dmb.ish+addr-tlbi-dsb.ish-isb-00.png">
+<pre class="verbatim">AArch64 MP+dmb.ish+addr-tlbi-dsb.ish-isb
+{
+  z = y;
+  0:X0=(oa:PA(x),valid:0);
+  0:X1=pte_x; 0:X2=x; 0:X3=z;
+  1:X3=z;
+}
+P0           | P1              ;
+STR X0,[X1]  | LDR X2,[X3]     ;
+DMB ISH      | LSR X9,X2,#12   ;
+STR X2,[X3]  | TLBI VAAE1IS,X9 ;
+             | DSB ISH         ;
+             | ISB             ;
+             | LDR X4,[X2]     ;
+exists (1:X2=x /\ ~fault(P1,x))
+</pre></body>
+</html>

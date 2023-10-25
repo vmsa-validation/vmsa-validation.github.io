@@ -1,0 +1,42 @@
+<h1 id="memory-model-litmus-tests-as-kvm-unit-tests">Memory model litmus tests as kvm-unit-tests</h1>
+<p>In this guide, we explain how to use kvm-unit-tests in combination with litmus7 to generate and run litmus tests as tiny operating systems.</p>
+<h2 id="background">Background</h2>
+<h3 id="memory-model-litmus-tests">Memory model litmus tests</h3>
+<p>A litmus test is a small program designed to exercise a certain behavior. Traditionally, litmus tests have been used to demonstrate and exercise the memory model of parallel computing systems. Litmus tests are often described in assembly or pseudo-assembly code and require tools like <a href="http://diy.inria.fr/doc/litmus.html">litmus7</a> to genererate executable programs and run litmus tests on real hardware.</p>
+<h3 id="why-kvm-unit-tests">Why kvm-unit-tests</h3>
+<p>litmus7 uses <a href="https://gitlab.com/kvm-unit-tests/kvm-unit-tests.git">kvm-unit-tests</a> to encapsulate litmus tests and generate executables in the form of tiny operating system. Inside this tiny operating system, the litmus test can control parameters of the execution that a user space application cannot. For example, virtual address translation and catch/handle exceptions.</p>
+<h2 id="building-and-running-litmus-kvm-unit-tests">Building and running litmus kvm-unit-tests</h2>
+<p>litmus7 is a tool that given a litmus test will generate C source code. The generated C source code is compiled and linked with kvm-unit-tests to generate a flat file.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>litmus7 is part of the herdtools7 toolsuite. See <a href="https://github.com/herd/herdtools7/blob/master/INSTALL.md">here</a> for instructions of how to install herdtools7.</p>
+<p>In addition to herdtools7, this guide assumes that you have a copy of kvm-unit-tests and you have already configured and built the default tests.</p>
+<h2 id="building-a-test">Building a test</h2>
+<p>In this guide, we use MP (Message Passing), a popular litmus test which demonstrates the communication pattern between a sender and a receiver process of a single message <code>x</code>. The variable <code>y</code> is the flag that the sender send only after the message is ready.</p>
+<pre><code>AArch64 MP
+&quot;PodWW Rfe PodRR Fre&quot;
+Generator=diyone7 (version 7.56)
+Prefetch=0:x=F,0:y=W,1:y=F,1:x=T
+Com=Rf Fr
+Orig=PodWW Rfe PodRR Fre
+{
+0:X1=x; 0:X3=y;
+1:X1=y; 1:X3=x;
+}
+P0          | P1          ;
+MOV W0,#1   | LDR W0,[X1] ;
+STR W0,[X1] | LDR W2,[X3] ;
+MOV W2,#1   |             ;
+STR W2,[X3] |             ;
+exists (1:X0=1 /\ 1:X2=0)</code></pre>
+<p>Note: <a href="http://diy.inria.fr/doc/gen.html">diy7</a> and <a href="http://diy.inria.fr/doc/gen.html">diyone7</a> from the herdtools7 toolsuite can systematically generate litmus tests. For example to generate the MP:</p>
+<pre><code>   diyone7 -arch AArch64 PodWW Rfe PodRR Fre -name MP</code></pre>
+<p>Assuming the file MP.litmus contains the test and TOP_DIR is the top directory of kvm-unit-tests, we can use litmus7 to generate the C sources:</p>
+<pre><code>   litmus7 -mach kvm-aarch64 -variant precise -o ${TOP_DIR}/litmus_tests MP.litmus</code></pre>
+<p>To build the test:</p>
+<pre><code>   cd litmus-tests &amp;&amp; make &amp;&amp; cd -</code></pre>
+<p>This will build the test in the file <code>litmus-tests/MP.flat</code> which you can run like any other test:</p>
+<pre><code>    ./arm/run litmus-tests/MP.flat -smp 4</code></pre>
+<p>Or more conviniently:</p>
+<pre><code>    sh litmus-tests/run.sh</code></pre>
+<p>In this latter form some options can be added such as <code>-s &lt;num&gt;</code> (size of experiment) and <code>-r &lt;num&gt;</code> number of experiments. See <a href="https://diy.inria.fr/doc/litmus.html">litmus7</a> documentation for details.</p>
+<p>NOTE: Currently litmus7 makes the assumption that it will run with 4 cores. This can be changed by passing option <code>-avail $N</code> to litmus7.</p>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test F2.mod-with-type+BBM</title>
+</head>
+<body>
+
+<h3><a id="tst@onetwo-less-F2.mod-with-type+BBM">Test</a> <a href="onetwo-less-src/F2.mod-with-type+BBM.litmus">F2.mod-with-type+BBM</a></h3>
+<img src="onetwo-less-img/F2.mod-with-type+BBM-00.png"> <img src="onetwo-less-img/F2.mod-with-type+BBM-01.png"> <img src="onetwo-less-img/F2.mod-with-type+BBM-02.png"> <img src="onetwo-less-img/F2.mod-with-type+BBM-03.png">&#X2026;
+<pre class="verbatim">AArch64 F2.mod-with-type+BBM
+{
+ [PTE(x)]=(db:0, valid:1);
+ 0:X4=(oa:PA(x),db:1, valid:0);
+ 0:X1=(oa:PA(x),db:1, valid:1);
+ 0:X2=PTE(x); 0:X3=x;
+ 1:X3=x;
+}
+P0                | P1                ;
+  STR  X4,[X2]    |                   ;
+  DSB  ISH        |                   ;
+  LSR  X9,X3,#12  |                   ;
+  TLBI VAAE1IS,X9 |                   ;
+  DSB  ISH        |                   ;
+  STR  X1,[X2]    |     MOV  W4,#1    ;
+  LDR  W7,[X3]    |     STR  W4, [X3] ;
+                  | L0: STR  W4, [X3] ;
+exists (0:X7=0 /\ fault(P1:L0,x,MMU:Translation)) \/ (0:X7=1 /\ fault(P1:L0,x,MMU:Translation))
+</pre></body>
+</html>

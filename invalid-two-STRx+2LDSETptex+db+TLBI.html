@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test STRx+2LDSETptex+db+TLBI</title>
+</head>
+<body>
+
+<h3><a id="tst@invalid-two-STRx+2LDSETptex+db+TLBI">Test</a> <a href="invalid-two-src/STRx+2LDSETptex+db+TLBI.litmus">STRx+2LDSETptex+db+TLBI</a></h3>
+<img src="invalid-two-img/STRx+2LDSETptex+db+TLBI-00.png"> <img src="invalid-two-img/STRx+2LDSETptex+db+TLBI-01.png"> <img src="invalid-two-img/STRx+2LDSETptex+db+TLBI-02.png"> <img src="invalid-two-img/STRx+2LDSETptex+db+TLBI-03.png">&#X2026;
+<pre class="verbatim">AArch64 STRx+2LDSETptex+db+TLBI
+TTHM=HA HD
+{
+pte_x=(db:0,dbm:1);
+0:X2=x; 1:X2=x;
+1:X4=pte_x;
+}
+  P0        | P1               ;
+MOV W1,#1   | MOV X6,#1        ;
+L0:         | LSL X6,X6,#7     ;
+STR W1,[X2] | LDSET X6,X0,[X4] ; (* clear db atomically *)
+            | DSB ISH          ;
+            | LSR X9,X2,#12    ;
+            | TLBI VAAE1IS,X9  ;
+            | DSB ISH          ;
+            | LDSET X6,X1,[X4] ; (* again *)
+exists (1:X0=(oa:PA(x), dbm:1) /\ 1:X1=(oa:PA(x), dbm:1) /\ [PTE(x)]=(oa:PA(x), dbm:1, db:0) /\ [x]=1 /\ ~fault(P0:L0,x)) \/ (1:X0=(oa:PA(x), dbm:1) /\ 1:X1=(oa:PA(x), dbm:1, db:0) /\ [PTE(x)]=(oa:PA(x), dbm:1) /\ [x]=1 /\ ~fault(P0:L0,x)) \/ (1:X0=(oa:PA(x), dbm:1, db:0) /\ 1:X1=(oa:PA(x), dbm:1) /\ [PTE(x)]=(oa:PA(x), dbm:1) /\ [x]=1 /\ ~fault(P0:L0,x))
+</pre></body>
+</html>

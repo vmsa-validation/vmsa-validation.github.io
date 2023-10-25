@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test MP+tlbi-sync.ishsWptevapteoa.va-isbsWpteoa.vap-pos+pos</title>
+</head>
+<body>
+
+<h3><a id="tst@Vougeot-MP+tlbi-sync.ishsWptevapteoa.va-isbsWpteoa.vap-pos+pos">Test</a> <a href="Vougeot-src/MP+tlbi-sync.ishsWptevapteoa.va-isbsWpteoa.vap-pos+pos.litmus">MP+tlbi-sync.ishsWptevapteoa.va-isbsWpteoa.vap-pos+pos</a></h3>
+<img src="Vougeot-img/MP+tlbi-sync.ishsWptevapteoa.va-isbsWpteoa.vap-pos+pos-00.png"> <img src="Vougeot-img/MP+tlbi-sync.ishsWptevapteoa.va-isbsWpteoa.vap-pos+pos-01.png"> <img src="Vougeot-img/MP+tlbi-sync.ishsWptevapteoa.va-isbsWpteoa.vap-pos+pos-02.png"> <img src="Vougeot-img/MP+tlbi-sync.ishsWptevapteoa.va-isbsWpteoa.vap-pos+pos-03.png">&#X2026;
+<pre class="verbatim">AArch64 MP+tlbi-sync.ishsWptevapteoa.va-isbsWpteoa.vap-pos+pos
+"TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWWPteOA.VAP PosWW Rfe PosRR FrePPteVA"
+Variant=imprecise
+Cycle=Rfe PosRR FrePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWWPteOA.VAP PosWW
+Relax=[PteVA,TLBI-sync.ISHsWW,PteOA,PteVA,ISBsWW]
+Safe=Rfe Fre PosWW PosRR
+Generator=diy7 (version 7.56+02~dev)
+Com=Rf Fr
+Orig=TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWWPteOA.VAP PosWW Rfe PosRR FrePPteVA
+{ int x=0; int y=4;
+0:X0=PTE(x); 0:X1=(oa:PA(x), valid:0); 0:X2=(oa:PA(y)); 0:X4=x;
+1:X0=x;
+}
+ P0              | P1          ;
+ STR X1,[X0]     | LDR W1,[X0] ;
+ LSR X6,X4,#12   | LDR W2,[X0] ;
+ DSB ISH         |             ;
+ TLBI VAAE1IS,X6 |             ;
+ DSB ISH         |             ;
+ STR X2,[X0]     |             ;
+ ISB             |             ;
+ MOV W3,#1       |             ;
+ STR W3,[X4]     |             ;
+ MOV W5,#2       |             ;
+ STR W5,[X4]     |             ;
+exists (1:X1=0 /\ 1:X2=1 /\ [x]=0 /\ ~fault(P0,x) /\ ~fault(P1,x)) \/ (1:X1=0 /\ 1:X2=1 /\ [x]=0 /\ fault(P0,x,MMU:Translation) /\ ~fault(P1,x)) \/ (1:X1=0 /\ 1:X2=1 /\ [x]=0 /\ fault(P0,x) /\ fault(P1,x)) \/ (1:X1=0 /\ 1:X2=1 /\ [x]=0 /\ fault(P1,x,MMU:Translation) /\ ~fault(P0,x)) \/ (1:X1=1 /\ 1:X2=1 /\ [x]=0 /\ fault(P0,x,MMU:Translation) /\ ~fault(P1,x)) \/ (1:X1=1 /\ 1:X2=2 /\ [x]=0 /\ fault(P0,x,MMU:Translation) /\ ~fault(P1,x)) \/ (1:X1=1 /\ 1:X2=2 /\ [x]=0 /\ fault(P0,x,MMU:Translation) /\ fault(P1,x,MMU:Translation)) \/ (1:X1=4 /\ 1:X2=1 /\ [x]=0 /\ fault(P0,x,MMU:Translation) /\ ~fault(P1,x)) \/ (1:X1=4 /\ 1:X2=1 /\ [x]=0 /\ fault(P0,x,MMU:Translation) /\ fault(P1,x,MMU:Translation)) \/ (1:X1=4 /\ 1:X2=1 /\ [x]=0 /\ fault(P1,x,MMU:Translation) /\ ~fault(P0,x)) \/ (1:X1=4 /\ 1:X2=2 /\ [x]=0 /\ fault(P0,x,MMU:Translation) /\ ~fault(P1,x))
+</pre></body>
+</html>

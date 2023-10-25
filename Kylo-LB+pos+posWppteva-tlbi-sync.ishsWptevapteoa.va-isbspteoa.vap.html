@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test LB+pos+posWppteva-tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap</title>
+</head>
+<body>
+
+<h3><a id="tst@Kylo-LB+pos+posWppteva-tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap">Test</a> <a href="Kylo-src/LB+pos+posWppteva-tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap.litmus">LB+pos+posWppteva-tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap</a></h3>
+<img src="Kylo-img/LB+pos+posWppteva-tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap-00.png"> <img src="Kylo-img/LB+pos+posWppteva-tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap-01.png"> <img src="Kylo-img/LB+pos+posWppteva-tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap-02.png"> <img src="Kylo-img/LB+pos+posWppteva-tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap-03.png">&#X2026;
+<pre class="verbatim">AArch64 LB+pos+posWppteva-tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap
+"PosRW Rfe PosRWPPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWWPteOA.VAP Rfe"
+Variant=imprecise
+Cycle=Rfe PosRW Rfe PosRWPPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWWPteOA.VAP
+Relax=[PteVA,TLBI-sync.ISHsWW,PteOA,PteVA,ISBsWW]
+Safe=Rfe PosRW
+Generator=diy7 (version 7.56+02~dev)
+Com=Rf Rf
+Orig=PosRW Rfe PosRWPPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWWPteOA.VAP Rfe
+{ int x=0; int y=4;
+0:X0=x;
+1:X0=x; 1:X2=PTE(x); 1:X3=(oa:PA(x), valid:0); 1:X4=(oa:PA(y));
+}
+ P0          | P1              ;
+ LDR W1,[X0] | LDR W1,[X0]     ;
+ MOV W2,#1   | STR X3,[X2]     ;
+ STR W2,[X0] | LSR X6,X0,#12   ;
+             | DSB ISH         ;
+             | TLBI VAAE1IS,X6 ;
+             | DSB ISH         ;
+             | STR X4,[X2]     ;
+             | ISB             ;
+             | MOV W5,#2       ;
+             | STR W5,[X0]     ;
+exists (0:X1=0 /\ 1:X1=0 /\ [x]=1 /\ fault(P0,x) /\ ~fault(P1,x))
+</pre></body>
+</html>

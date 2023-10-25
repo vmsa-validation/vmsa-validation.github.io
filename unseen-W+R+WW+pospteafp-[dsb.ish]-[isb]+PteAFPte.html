@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test W+R+WW+pospteafp-[dsb.ish]-[isb]+PteAFPte</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-W+R+WW+pospteafp-[dsb.ish]-[isb]+PteAFPte">Test</a> <a href="unseen-src/W+R+WW+pospteafp-[dsb.ish]-[isb]+PteAFPte.litmus">W+R+WW+pospteafp-[dsb.ish]-[isb]+PteAFPte</a></h3>
+<img src="unseen-img/W+R+WW+pospteafp-[dsb.ish]-[isb]+PteAFPte-00.png"> <img src="unseen-img/W+R+WW+pospteafp-[dsb.ish]-[isb]+PteAFPte-01.png"> <img src="unseen-img/W+R+WW+pospteafp-[dsb.ish]-[isb]+PteAFPte-02.png"> <img src="unseen-img/W+R+WW+pospteafp-[dsb.ish]-[isb]+PteAFPte-03.png">&#X2026;
+<pre class="verbatim">AArch64 W+R+WW+pospteafp-[dsb.ish]-[isb]+PteAFPte
+"RfePteAFPte FrePtePteAF PosWWPteAFP DSB.ISH ISB CoePPteAF"
+variant=precise
+Cycle=ISB CoePPteAF RfePteAFPte FrePtePteAF PosWWPteAFP DSB.ISH
+Relax=Pte PteAF
+Safe=Rfe Fre Coe [PosWW,DSB.ISH,ISB]
+Generator=diy7 (version 7.56+02~dev)
+Com=Rf Fr Co
+Orig=RfePteAFPte FrePtePteAF PosWWPteAFP DSB.ISH ISB CoePPteAF
+{
+pteval_t 1:X2; pteval_t 1:X1; pteval_t 0:X2;
+ int x=0;
+0:X0=PTE(x); 0:X1=(oa:PA(x), af:0);
+1:X0=PTE(x);
+2:X0=PTE(x); 2:X1=(oa:PA(x)); 2:X3=x;
+}
+ P0          | P1          | P2          ;
+ STR X1,[X0] | LDR X1,[X0] | STR X1,[X0] ;
+ LDR X2,[X0] | LDR X2,[X0] | DSB ISH     ;
+             |             | ISB         ;
+             |             | MOV W2,#1   ;
+             |             | STR W2,[X3] ;
+exists (0:X2=(oa:PA(x)) /\ 1:X1=(oa:PA(x), af:0) /\ 1:X2=(oa:PA(x)) /\ [x]=1 /\ ~fault(P2,x)) \/ (0:X2=(oa:PA(x), af:0) /\ 1:X1=(oa:PA(x)) /\ 1:X2=(oa:PA(x), af:0) /\ [x]=0 /\ fault(P2,x,MMU:AccessFlag))
+</pre></body>
+</html>

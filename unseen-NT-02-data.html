@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test NT-02-data</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-NT-02-data">Test</a> <a href="unseen-src/NT-02-data.litmus">NT-02-data</a></h3>
+<img src="unseen-img/NT-02-data-00.png"> <img src="unseen-img/NT-02-data-01.png"> <img src="unseen-img/NT-02-data-02.png"> <img src="unseen-img/NT-02-data-03.png">&#X2026;
+<pre class="verbatim">AArch64 NT-02-data
+TTHM=P1:HA
+Variant=precise
+{
+int x=1; int y;
+pte_x=(af:0,valid:0);
+0:X2=y;
+0:X6=pte_x;
+1:X2=y; 1:X4=x;
+}
+  P0             | P1           ;
+MOV X9,#1        | LDR W0,[X2]  ;
+LDSET X9,X7,[X6] | DMB LD       ;
+LDR X5,[X6]      |L0:           ;
+EOR X3,X5,X5     | LDR W1,[X4]  ;
+ADD W0,W3,#1     |              ;
+STR W0,[X2]      |              ;
+exists (0:X5=(oa:PA(x)) /\ 1:X0=1 /\ 1:X1=0 /\ [PTE(x)]=(oa:PA(x)) /\ fault(P1:L0,x,MMU:Translation)) \/ (0:X5=(oa:PA(x), af:0) /\ 1:X0=1 /\ 1:X1=0 /\ [PTE(x)]=(oa:PA(x)) /\ fault(P1:L0,x,MMU:Translation))
+</pre></body>
+</html>

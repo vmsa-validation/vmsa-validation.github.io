@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test coRR+HA-DSB.LD</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-coRR+HA-DSB.LD">Test</a> <a href="unseen-src/coRR+HA-DSB.LD.litmus">coRR+HA-DSB.LD</a></h3>
+<img src="unseen-img/coRR+HA-DSB.LD-00.png"> <img src="unseen-img/coRR+HA-DSB.LD-01.png"> <img src="unseen-img/coRR+HA-DSB.LD-02.png"> <img src="unseen-img/coRR+HA-DSB.LD-03.png">
+<pre class="verbatim">AArch64 coRR+HA-DSB.LD
+TTHM=HA
+{
+pte_x=(oa:phy_x,af:0);
+
+0:X1=x;
+0:X4=pte_x;
+}
+P0           ;
+LDR W2,[X1]  ;
+DSB LD       ;
+LDR X3,[X4]  ;
+exists (0:X3=(oa:PA(x), af:0))
+</pre></body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test STRx+LDCLRptex+db</title>
+</head>
+<body>
+
+<h3><a id="tst@invalid-two-STRx+LDCLRptex+db">Test</a> <a href="invalid-two-src/STRx+LDCLRptex+db.litmus">STRx+LDCLRptex+db</a></h3>
+
+<pre class="verbatim">AArch64 STRx+LDCLRptex+db
+TTHM=HA HD
+{
+pte_x=(db:0,dbm:1);
+0:X2=x;
+1:X4=pte_x;
+}
+  P0        | P1               ;
+MOV W1,#1   | MOV X1,#1        ;
+L0:         | LDCLR X1,X0,[X4] ; (* Clear bit 0 atomically -&gt; invalid *)
+STR W1,[X2] |                  ;
+
+exists (1:X0=(oa:PA(x), dbm:1) /\ [PTE(x)]=(oa:PA(x), valid:0, dbm:1) /\ [x]=0 /\ fault(P0:L0,x,MMU:Translation))
+</pre></body>
+</html>

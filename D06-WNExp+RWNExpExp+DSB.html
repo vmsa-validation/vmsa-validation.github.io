@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test WNExp+RWNExpExp+DSB</title>
+</head>
+<body>
+
+<h3><a id="tst@D06-WNExp+RWNExpExp+DSB">Test</a> <a href="D06-src/WNExp+RWNExpExp+DSB.litmus">WNExp+RWNExpExp+DSB</a></h3>
+<img src="D06-img/WNExp+RWNExpExp+DSB-00.png"> <img src="D06-img/WNExp+RWNExpExp+DSB-01.png">
+<pre class="verbatim">AArch64 WNExp+RWNExpExp+DSB
+TTHM=HA HD
+{
+0:X0=x; 0:X1=1;
+1:X0=x;
+1:X2=pte_x;
+pte_x=(oa:phy_x,valid:1,af:1,db:0,dbm:1);
+1:X3=(oa:phy_y,valid:1,af:1,db:0,dbm:1);
+int y;
+}
+P0              | P1          ;
+STR W1, [X0]    | LDR W1, [X0];
+                | DSB ISH     ;
+                | STR X3, [X2];
+exists (1:X1=1 /\ [PTE(x)]=(oa:PA(y), dbm:1))
+</pre></body>
+</html>

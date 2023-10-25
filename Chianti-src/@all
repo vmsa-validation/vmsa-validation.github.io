@@ -1,0 +1,6 @@
+MP+dmb.st+fault.litmus
+MP+dmb.sy+addr-store-pos-addr+W+PTE.litmus
+MP+dmb.sy+addrR-pos-addr+W+PTE.litmus
+Marc03+BIS.litmus
+W+W+WW+posptevap-[dsb.ish]-[isb]+PteOAPteVA.litmus
+Z6.3+pos+tlbi-sync.ishsptevapteoa.va+pos.litmus

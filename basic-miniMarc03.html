@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test miniMarc03</title>
+</head>
+<body>
+
+<h3><a id="tst@basic-miniMarc03">Test</a> <a href="basic-src/miniMarc03.litmus">miniMarc03</a></h3>
+<img src="basic-img/miniMarc03-00.png">
+<pre class="verbatim">AArch64 miniMarc03
+
+{
+int x =  1 ; (* oldpage *)
+int y =  0 ; (* newpage *)
+int z; (* spare PTE *)
+pte_z = (oa:phy_x) ;
+0:X2=x;
+1:X2=x; 1:X4=y;
+1:X6=pte_x; 1:X8=pte_y;
+1:X7=(oa:phy_x,valid:0); (* invalid entry *)
+1:X10=z;
+2:X2=x;
+}
+
+P0          | P1              | P2           ;
+            | STR X7,[X6]     | MOV W0,2     ;
+            | LSR X3,X2,12    | STR W0,[X2]  ;
+            | DSB ISH         |              ;
+            | TLBI VAAE1IS,X3 |              ;
+            | DSB ISH         |              ;
+            | ISB             |              ;
+            | LDR W5,[X10]    |              ;
+locations[1:X5;y;]
+~exists x=2 /\ 1:X5=1 
+
+(*Should be Forbid*)
+</pre></body>
+</html>

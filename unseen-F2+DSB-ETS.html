@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test F2+DSB-ETS</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-F2+DSB-ETS">Test</a> <a href="unseen-src/F2+DSB-ETS.litmus">F2+DSB-ETS</a></h3>
+<img src="unseen-img/F2+DSB-ETS-00.png"> <img src="unseen-img/F2+DSB-ETS-01.png"> <img src="unseen-img/F2+DSB-ETS-02.png"> <img src="unseen-img/F2+DSB-ETS-03.png">
+<pre class="verbatim">AArch64 F2+DSB-ETS
+{
+[PTE(x)]=(db:0);
+0:X1=(oa:PA(x),db:1);
+0:X2=PTE(x); 0:X3=x;
+1:X3=x
+}
+
+P0                 | P1               ;
+   STR  X1,[X2]    |    MOV  W4,#1    ;
+   DSB  ISH        |    STR  W4, [X3] ; (* new permissions *)
+   LDR  W7,[X3]    | L0:STR  W4, [X3] ; (* old permissions *)
+exists (0:X7=0 /\ fault(P1:L0,x,MMU:Permission)) \/ (0:X7=1 /\ fault(P1:L0,x,MMU:Permission))
+</pre></body>
+</html>

@@ -1,0 +1,18 @@
+AArch64 MP-ISB3
+{ 
+pte_x=(valid:0,oa:phy_x);
+0:X2=pte_x;
+0:X1=(valid:1,oa:phy_y);
+0:X3=x; 1:X3=x;
+y=1;
+0:X8=z; 1:X8=z;
+0:X10=a; 1:X10=a;
+}
+P0               | P1;
+STR X1,[X2]      | LDAR X7,[X8]    ;
+DSB ST           | L1: LDAR X4,[X3];
+MOV X7,#1        | MOV X5,#1       ;
+STLR X7,[X8]     | STR X5,[X10]    ;
+LDAR X9,[X10]    |                 ;
+L0: LDR X4,[X3]  |                 ;
+exists (0:X4=0 /\ 1:X4=0 /\ 1:X7=0 /\ fault(P0:L0,x,MMU:Translation) /\ fault(P1:L1,x,MMU:Translation)) \/ (0:X4=0 /\ 1:X4=0 /\ 1:X7=1 /\ fault(P0:L0,x,MMU:Translation) /\ fault(P1:L1,x,MMU:Translation)) \/ (0:X4=0 /\ 1:X4=1 /\ 1:X7=0 /\ fault(P0:L0,x,MMU:Translation) /\ ~fault(P1:L1,x)) \/ (0:X4=0 /\ 1:X4=1 /\ 1:X7=1 /\ fault(P0:L0,x,MMU:Translation) /\ ~fault(P1:L1,x))

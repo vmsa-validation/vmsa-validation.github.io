@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test MP+HA-DSB.LD</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-MP+HA-DSB.LD">Test</a> <a href="unseen-src/MP+HA-DSB.LD.litmus">MP+HA-DSB.LD</a></h3>
+<img src="unseen-img/MP+HA-DSB.LD-00.png"> <img src="unseen-img/MP+HA-DSB.LD-01.png"> <img src="unseen-img/MP+HA-DSB.LD-02.png"> <img src="unseen-img/MP+HA-DSB.LD-03.png">
+<pre class="verbatim">AArch64 MP+HA-DSB.LD
+TTHM=HA
+{
+pte_x=(oa:phy_x,af:0);
+
+0:X1=x;
+0:X3=1;
+0:X4=y;
+
+1:X4=y;
+1:X1=pte_x;
+}
+P0          | P1          ;
+LDR W2,[X1] | LDR W3,[X4] ;
+DSB LD      | DMB LD      ;
+STR W3,[X4] | LDR X2,[X1] ;
+exists (1:X2=(oa:PA(x), af:0) /\ 1:X3=1)
+</pre></body>
+</html>

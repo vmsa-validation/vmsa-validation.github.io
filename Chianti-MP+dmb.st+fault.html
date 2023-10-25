@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test MP+dmb.st+fault</title>
+</head>
+<body>
+
+<h3><a id="tst@Chianti-MP+dmb.st+fault">Test</a> <a href="Chianti-src/MP+dmb.st+fault.litmus">MP+dmb.st+fault</a></h3>
+<img src="Chianti-img/MP+dmb.st+fault-00.png">
+<pre class="verbatim">AArch64 MP+dmb.st+fault
+{
+ [PTE(z)]=(oa:PA(z), valid:0);
+ [z]=2;
+ 0:X1=x; 0:X3=y;
+ 1:X1=y; 1:X3=x; 1:X4=z;
+}
+ P0          | P1          | P1.F           ;
+ MOV W0,#1   | LDR W0,[X1] | LDR W5,[X3]    ;
+ STR W0,[X1] |L0:          | ADR X9,L1      ;
+ DMB ST      | LDR W2,[X4] | MSR ELR_EL1,X9 ;
+ MOV W2,#1   |L1:          | ERET           ;
+ STR W2,[X3] |             |                ;
+exists (1:X0=1 /\ 1:X5=0)
+</pre></body>
+</html>

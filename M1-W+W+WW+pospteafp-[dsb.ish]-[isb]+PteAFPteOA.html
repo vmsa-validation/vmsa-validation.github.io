@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test W+W+WW+pospteafp-[dsb.ish]-[isb]+PteAFPteOA</title>
+</head>
+<body>
+
+<h3><a id="tst@M1-W+W+WW+pospteafp-[dsb.ish]-[isb]+PteAFPteOA">Test</a> <a href="M1-src/W+W+WW+pospteafp-[dsb.ish]-[isb]+PteAFPteOA.litmus">W+W+WW+pospteafp-[dsb.ish]-[isb]+PteAFPteOA</a></h3>
+<img src="M1-img/W+W+WW+pospteafp-[dsb.ish]-[isb]+PteAFPteOA-00.png"> <img src="M1-img/W+W+WW+pospteafp-[dsb.ish]-[isb]+PteAFPteOA-01.png"> <img src="M1-img/W+W+WW+pospteafp-[dsb.ish]-[isb]+PteAFPteOA-02.png"> <img src="M1-img/W+W+WW+pospteafp-[dsb.ish]-[isb]+PteAFPteOA-03.png">&#X2026;
+<pre class="verbatim">AArch64 W+W+WW+pospteafp-[dsb.ish]-[isb]+PteAFPteOA
+"CoePteAFPteOA CoePteOAPteAF PosWWPteAFP DSB.ISH ISB CoePPteAF"
+variant=precise
+Cycle=ISB CoePPteAF CoePteAFPteOA CoePteOAPteAF PosWWPteAFP DSB.ISH
+Relax=PteAF PteOA
+Safe=Coe [PosWW,DSB.ISH,ISB]
+Generator=diy7 (version 7.56+02~dev)
+Com=Co Co Co
+Orig=CoePteAFPteOA CoePteOAPteAF PosWWPteAFP DSB.ISH ISB CoePPteAF
+{
+pteval_t 1:X2; pteval_t 0:X2;
+ int x=0; int y=4;
+0:X0=PTE(x); 0:X1=(oa:PA(x), af:0);
+1:X0=PTE(x); 1:X1=(oa:PA(y), af:0);
+2:X0=PTE(x); 2:X1=(oa:PA(y)); 2:X3=x;
+}
+ P0          | P1          | P2          ;
+ STR X1,[X0] | STR X1,[X0] | STR X1,[X0] ;
+ LDR X2,[X0] | LDR X2,[X0] | DSB ISH     ;
+             |             | ISB         ;
+             |             | MOV W2,#1   ;
+             |             | STR W2,[X3] ;
+exists (0:X2=(oa:PA(x), af:0) /\ 1:X2=(oa:PA(x), af:0) /\ [x]=0 /\ ~fault(P2,x)) \/ (0:X2=(oa:PA(x), af:0) /\ 1:X2=(oa:PA(y)) /\ [x]=0 /\ ~fault(P2,x)) \/ (0:X2=(oa:PA(y)) /\ 1:X2=(oa:PA(y), af:0) /\ [x]=0 /\ ~fault(P2,x))
+</pre></body>
+</html>

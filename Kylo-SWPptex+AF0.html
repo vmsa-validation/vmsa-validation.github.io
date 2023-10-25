@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test SWPptex+AF0</title>
+</head>
+<body>
+
+<h3><a id="tst@Kylo-SWPptex+AF0">Test</a> <a href="Kylo-src/SWPptex+AF0.litmus">SWPptex+AF0</a></h3>
+<img src="Kylo-img/SWPptex+AF0-00.png"> <img src="Kylo-img/SWPptex+AF0-01.png"> <img src="Kylo-img/SWPptex+AF0-02.png"> <img src="Kylo-img/SWPptex+AF0-03.png">&#X2026;
+<pre class="verbatim">AArch64 SWPptex+AF0
+TTHM=HA
+{
+int x=0; int y=1;
+pte_x=(af:0);
+0:X0=pte_x;
+0:X2=(oa:phy_y,af:0);
+pteval_t 0:X4;
+}
+ P0            ;
+SWP X2,X4,[X0] ;
+exists (0:X4=(oa:PA(x)) /\ [PTE(x)]=(oa:PA(y))) \/ (0:X4=(oa:PA(x)) /\ [PTE(x)]=(oa:PA(y), af:0)) \/ (0:X4=(oa:PA(x), af:0) /\ [PTE(x)]=(oa:PA(y)))
+</pre></body>
+</html>

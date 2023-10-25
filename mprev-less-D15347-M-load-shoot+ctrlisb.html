@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test D15347-M-load-shoot+ctrlisb</title>
+</head>
+<body>
+
+<h3><a id="tst@mprev-less-D15347-M-load-shoot+ctrlisb">Test</a> <a href="mprev-less-src/D15347-M-load-shoot+ctrlisb.litmus">D15347-M-load-shoot+ctrlisb</a></h3>
+<img src="mprev-less-img/D15347-M-load-shoot+ctrlisb-00.png">
+<pre class="verbatim">AArch64 D15347-M-load-shoot+ctrlisb
+Variant=precise
+{
+pte_x=(valid:0); (*invalid*)
+0:X2=pte_x;
+0:X1=(oa:phy_y); 
+0:X3=x;
+1:X3=x;
+y=1;
+pte_z=(af:1,db:1);
+0:X8=z; 
+1:X8=z;
+}
+P0              | P1;
+STR X1,[X2]     | LDR W7,[X8] ;
+DSB ISH         | CBZ W7,L1   ;
+LSR X9,X3,#12   | ISB         ;
+TLBI VAAE1IS,X9 |L0:          ;
+DSB ISH         | LDR W4,[X3] ;
+MOV W7,#1       |L1:          ;
+STR W7,[X8]     |             ;
+exists (1:X4=0 /\ 1:X7=1 /\ fault(P1:L0,x,MMU:Translation))
+</pre></body>
+</html>

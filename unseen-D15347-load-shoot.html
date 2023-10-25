@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test D15347-load-shoot</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-D15347-load-shoot">Test</a> <a href="unseen-src/D15347-load-shoot.litmus">D15347-load-shoot</a></h3>
+<img src="unseen-img/D15347-load-shoot-00.png">
+<pre class="verbatim">AArch64 D15347-load-shoot
+{
+pte_x=(valid:0,db:1); (*invalid*)
+0:X2=pte_x;
+0:X5=x;
+0:X1=(oa:phy_y,db:1); 
+0:X3=x;
+y=1;
+}
+P0              ;
+MOV W4,#0       ;
+STR X1,[X2]     ;
+DSB ISH         ;
+LSR X9,X5,12    ;
+TLBI VAAE1IS,X9 ; 
+DSB ISH         ;
+L0:LDR W4,[X3]  ;
+exists (0:X4=0 /\ fault(P0:L0,x,MMU:Translation))
+</pre></body>
+</html>

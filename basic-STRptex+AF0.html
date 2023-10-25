@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test STRptex+AF0</title>
+</head>
+<body>
+
+<h3><a id="tst@basic-STRptex+AF0">Test</a> <a href="basic-src/STRptex+AF0.litmus">STRptex+AF0</a></h3>
+
+<pre class="verbatim">AArch64 STRptex+AF0
+TTHM=HA
+{
+int x=0; int y=1;
+pte_x=(af:0);
+0:X0=pte_x;
+0:X2=(oa:phy_y,af:0);
+pteval_t 0:X4;
+}
+ P0         ;
+LDR X4,[X0] ;
+STR X2,[X0] ;
+exists pte_x=(oa:phy_y,af:0) /\ 0:X4=(oa:phy_y,af:1)
+</pre></body>
+</html>

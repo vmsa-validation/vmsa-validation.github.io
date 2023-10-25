@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test R+posWppteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap</title>
+</head>
+<body>
+
+<h3><a id="tst@Vougeot-R+posWppteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap">Test</a> <a href="Vougeot-src/R+posWppteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap.litmus">R+posWppteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap</a></h3>
+<img src="Vougeot-img/R+posWppteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap-00.png"> <img src="Vougeot-img/R+posWppteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap-01.png"> <img src="Vougeot-img/R+posWppteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap-02.png"> <img src="Vougeot-img/R+posWppteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap-03.png">&#X2026;
+<pre class="verbatim">AArch64 R+posWppteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap
+"PosWWPPteVA TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWRPteOA.VAP Fre"
+Variant=imprecise
+Cycle=Fre PosWWPPteVA TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWRPteOA.VAP
+Relax=[PteVA,TLBI-sync.ISHsWW,PteOA,PteVA] [PteVA,TLBI-sync.ISHsWW,PteOA,PteVA,ISBsWR]
+Safe=Fre Coe PosWW
+Generator=diy7 (version 7.56+02~dev)
+Com=Co Fr
+Orig=PosWWPPteVA TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWRPteOA.VAP Fre
+{
+pteval_t 0:X6;
+ int x=0; int y=4;
+0:X1=x; 0:X2=PTE(x); 0:X3=(oa:PA(x), valid:0); 0:X4=(oa:PA(y));
+1:X0=PTE(x); 1:X1=(oa:PA(y), valid:0); 1:X2=(oa:PA(y)); 1:X3=x;
+}
+ P0              | P1              ;
+ MOV W0,#1       | STR X1,[X0]     ;
+ STR W0,[X1]     | LSR X5,X3,#12   ;
+ STR X3,[X2]     | DSB ISH         ;
+ LSR X5,X1,#12   | TLBI VAAE1IS,X5 ;
+ DSB ISH         | DSB ISH         ;
+ TLBI VAAE1IS,X5 | STR X2,[X0]     ;
+ DSB ISH         | ISB             ;
+ STR X4,[X2]     | LDR W4,[X3]     ;
+ LDR X6,[X2]     |                 ;
+exists (0:X6=(oa:PA(y), valid:0) /\ 1:X4=4 /\ fault(P1,x,MMU:Translation) /\ ~fault(P0,x))
+</pre></body>
+</html>

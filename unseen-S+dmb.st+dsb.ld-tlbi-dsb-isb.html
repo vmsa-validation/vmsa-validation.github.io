@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test S+dmb.st+dsb.ld-tlbi-dsb-isb</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-S+dmb.st+dsb.ld-tlbi-dsb-isb">Test</a> <a href="unseen-src/S+dmb.st+dsb.ld-tlbi-dsb-isb.litmus">S+dmb.st+dsb.ld-tlbi-dsb-isb</a></h3>
+<img src="unseen-img/S+dmb.st+dsb.ld-tlbi-dsb-isb-00.png">
+<pre class="verbatim">AArch64 S+dmb.st+dsb.ld-tlbi-dsb-isb
+{
+pte_x=(valid:1);
+
+0:X1=(oa:phy_x,valid:0);
+0:X2=pte_x;
+0:X8=y;
+
+1:X8=y;
+1:X3=x;
+}
+P0           | P1;
+STR X1,[X2]  | MOV W7,#2       ;
+DMB ST       | STR W7,[X8]     ;
+MOV W7,#1    | DSB LD          ;
+STR W7,[X8]  | LSR X9,X3,#12   ;
+             | TLBI VAAE1IS,X9 ;
+             | DSB ISH         ;
+             | ISB             ;
+             |L0:              ;
+             | LDR W4,[X3]     ;
+exists ([y]=2 /\ ~fault(P1:L0,x))
+</pre></body>
+</html>

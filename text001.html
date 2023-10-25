@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Tests, tables and logs</title>
+</head>
+<body>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="nonets.html"><img src="next_motif.svg" alt="Next"></a>
+<hr>
+<h2 class="section" id="tests">Tests, tables and logs</h2>
+<ul>
+<li><a href="text001.html#subtests">Tests</a>
+</li><li><a href="text001.html#herd">Model simulation</a>
+</li><li><a href="text001.html#hardware">Hardware experiments</a>
+</li></ul>
+<p>
+VMSA extensions are featured in the head versions of our tools, available at <a href="https://github.com/herd/herdtools7.git"><span class="c003">https://github.com/herd/herdtools7.git</span></a>.</p><h3 class="subsection" id="subtests">Tests</h3>
+<p>
+Our complete <a href="tests.tgz">test base</a> consists in  1332 tests,
+most of which have been written by hand during model design. Some of the tests have been selected from automatically generated large test bases, because they highlighted specific points of some models.</p><h3 class="subsection" id="herd">Model simulation</h3>
+<p>
+Log: <a href="Model"><span class="c003">Model</span></a></p><p>Our model is distributed with the head version of the <a href="https://diy.inria.fr/doc/herd.html">herd7</a> simulation tool. All tests have been executed as follows:
+</p><pre class="verbatim">% herd7 -variant vmsa,fatal ...
+</pre><p>
+Where option <code class="verb">-variant vmsa</code> commands virtual-memory aware simulation, and <code class="verb">fatal</code> commands test thread stop in case of failing instruction (a.k.a. synchronous exception) &#X2014; Other options are <code class="verb">skip</code>, for returning after the failing instruction, and <code class="verb">handled</code> for re-executing the failing instruction). </p><p>Setting a timeout of 10&#XA0;minutes for each test, simulation terminates sucessfully for&#XA0;1291 tests.</p><h3 class="subsection" id="hardware">Hardware experiments</h3>
+<p>
+Log: <a href="Hardware"><span class="c003">Hardware</span></a></p><p>Tests are compiled into C source files by the <a href="https://diy.inria.fr/doc/litmus.html">litmus7</a> tool. Most of our experiments have been performed by using hypervisor support leveraging the existing <a href="https://gitlab.com/kvm-unit-tests/kvm-unit-tests.git">kvm-unit-tests</a> infrastructure. We have also performed bare-metal execution of those by extending kvm-unit-tests with Extensible Firmware Interface (EFI) support. Some of our extensions have been integrated upstream: <a href="https://lore.kernel.org/kvm/20201104130352.17633-1-nikos.nikoleris@arm.com/">configure translation granule</a> and&#XA0;<a href="https://lore.kernel.org/kvm/20230530160924.82158-1-nikos.nikoleris@arm.com/">EFI support</a>.</p><p>Generally tests are compiled by using litmus7 configuration options <code class="verb">-mach kvm-aarch64</code>, <code class="verb">-mach kvm-armv8.1</code> or <code class="verb">-mach kvm-m1</code>, depending upon target machine being ARMv8.0 or&#XA0;ARMv8.1. Moreover compiled test must be placed into a sub-directory <span class="c004">D</span> of the kvm-litmus-tests installation. Tests are then run from the kvm-litmus-tesst directory installation with command <span class="c003">sh </span><span class="c004">D</span><span class="c003">/run.sh &#X2026;</span>.</p><p>We provide a small <a href="HOWTO.html">HOWTO file</a> to compile and run tests in VMSA&#XA0;mode.</p><p>We have run tests over a variety of ARMv8 systems, which we identify by convential machine names:
+</p><dl class="description"><dt class="dt-description"><span class="c005">camtx2</span></dt><dd class="dd-description"> Cavium ThunderX2 CN9975, 2 sockets, 28 Vulcan cores per socket, 4 treads per core. Unfortunately, we could perform few test runs on this machine.
+</dd><dt class="dt-description"><span class="c005">d06</span></dt><dd class="dd-description"> HiSilicon Kunpeng 920-6426, 2 sockets, 48 TaiShan cores per socket.
+</dd><dt class="dt-description"><span class="c005">cheilly</span></dt><dd class="dd-description"> Raspberry PI4&#XA0;B, 4 Cortex A72 cores. 
+</dd><dt class="dt-description"><span class="c005">kylo</span></dt><dd class="dd-description"> Two ARM N1SDP, 4 Neoverse-N1 cores.
+</dd><dt class="dt-description"><span class="c005">godel</span></dt><dd class="dd-description"> Bare-metal runs on one of the N1SDP machines.
+</dd><dt class="dt-description"><span class="c005">M1</span></dt><dd class="dd-description"> Apple M1 Pro, 2 icestorm cores, plus 8 firestorm cores.
+</dd><dt class="dt-description"><span class="c005">vougeot</span></dt><dd class="dd-description"> ODROID-C2, 4 cortex A53 cores.
+</dd><dt class="dt-description"><span class="c005">chianti</span></dt><dd class="dd-description"> ODROID-N2+, 2 cortex A53 cores, plus 4 cortex A73 cores.
+</dd></dl><p>
+Logs: <a href="Hardware"><span class="c003">Hardware</span></a>, <a href="Model"><span class="c003">Model</span></a>.</p><p><a href="http://diy.inria.fr/vrac/SHIP">Ready-To-Run tests</a> (also as archive <a href="http://diy.inria.fr/vrac/SHIP.tar"><span class="c003">SHIP.tar</span></a>).</p><hr>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="nonets.html"><img src="next_motif.svg" alt="Next"></a>
+</body>
+</html>

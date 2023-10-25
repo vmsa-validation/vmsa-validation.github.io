@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test NT-12-dmb-allha-variant1-LLSC</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-NT-12-dmb-allha-variant1-LLSC">Test</a> <a href="unseen-src/NT-12-dmb-allha-variant1-LLSC.litmus">NT-12-dmb-allha-variant1-LLSC</a></h3>
+<img src="unseen-img/NT-12-dmb-allha-variant1-LLSC-00.png"> <img src="unseen-img/NT-12-dmb-allha-variant1-LLSC-01.png"> <img src="unseen-img/NT-12-dmb-allha-variant1-LLSC-02.png"> <img src="unseen-img/NT-12-dmb-allha-variant1-LLSC-03.png">&#X2026;
+<pre class="verbatim">AArch64 NT-12-dmb-allha-variant1-LLSC
+TTHM=HA
+Variant=precise
+{
+pte_x=(af:0);
+x=1;
+0:X0=x; 0:X4=y;
+1:X0=y; 1:X2=pte_x;
+1:X17=(oa:phy_x,valid :0) ;
+}
+P0          | P1                ;
+LDR W1,[X0] | LDR W1,[X0]       ;
+DMB SY      | DMB LD            ;
+MOV W3,#1   | LDXR X3,[X2]      ;
+STR W3,[X4] | STXR W9, X17,[X2] ;
+exists (1:X1=1 /\ 1:X3=(oa:PA(x), af:0) /\ 1:X9=1)
+</pre></body>
+</html>

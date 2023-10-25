@@ -1,0 +1,23 @@
+AArch64 W+WW+R+posptevap-[dsb.ish]-[isb]+PteVAPte
+"CoePteVAPteVA PosWWPteVAP DSB.ISH ISB RfePPte FrePtePteVA"
+variant=precise
+Cycle=ISB RfePPte FrePtePteVA CoePteVAPteVA PosWWPteVAP DSB.ISH
+Relax=Pte PteVA
+Safe=Rfe Fre Coe [PosWW,DSB.ISH,ISB]
+Generator=diy7 (version 7.56+02~dev)
+Com=Co Rf Fr
+Orig=CoePteVAPteVA PosWWPteVAP DSB.ISH ISB RfePPte FrePtePteVA
+{
+pteval_t 2:X2; pteval_t 2:X1; pteval_t 0:X2;
+ int x=0;
+0:X0=PTE(x); 0:X1=(oa:PA(x), valid:0);
+1:X0=PTE(x); 1:X1=(oa:PA(x)); 1:X3=x;
+2:X0=PTE(x);
+}
+ P0          | P1          | P2          ;
+ STR X1,[X0] | STR X1,[X0] | LDR X1,[X0] ;
+ LDR X2,[X0] | DSB ISH     | LDR X2,[X0] ;
+             | ISB         |             ;
+             | MOV W2,#1   |             ;
+             | STR W2,[X3] |             ;
+exists (0:X2=(oa:PA(x), valid:0) /\ 2:X1=(oa:PA(x)) /\ 2:X2=(oa:PA(x), valid:0) /\ [x]=0 /\ fault(P1,x,MMU:Translation))

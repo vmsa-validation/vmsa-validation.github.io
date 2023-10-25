@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test 2+2W+tlbi-sync.ishsptevapteoa.va+posWppteva-tlbi-sync.ishsWptevapteoa.va-pospteoa.vap</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-2+2W+tlbi-sync.ishsptevapteoa.va+posWppteva-tlbi-sync.ishsWptevapteoa.va-pospteoa.vap">Test</a> <a href="unseen-src/2+2W+tlbi-sync.ishsptevapteoa.va+posWppteva-tlbi-sync.ishsWptevapteoa.va-pospteoa.vap.litmus">2+2W+tlbi-sync.ishsptevapteoa.va+posWppteva-tlbi-sync.ishsWptevapteoa.va-pospteoa.vap</a></h3>
+<img src="unseen-img/2+2W+tlbi-sync.ishsptevapteoa.va+posWppteva-tlbi-sync.ishsWptevapteoa.va-pospteoa.vap-00.png"> <img src="unseen-img/2+2W+tlbi-sync.ishsptevapteoa.va+posWppteva-tlbi-sync.ishsWptevapteoa.va-pospteoa.vap-01.png"> <img src="unseen-img/2+2W+tlbi-sync.ishsptevapteoa.va+posWppteva-tlbi-sync.ishsWptevapteoa.va-pospteoa.vap-02.png"> <img src="unseen-img/2+2W+tlbi-sync.ishsptevapteoa.va+posWppteva-tlbi-sync.ishsWptevapteoa.va-pospteoa.vap-03.png">&#X2026;
+<pre class="verbatim">AArch64 2+2W+tlbi-sync.ishsptevapteoa.va+posWppteva-tlbi-sync.ishsWptevapteoa.va-pospteoa.vap
+"TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAP PosWWPPteVA TLBI-sync.ISHsWWPteVAPteOA.VA PosWWPteOA.VAP CoePPteVA"
+Variant=imprecise
+Cycle=CoePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAP PosWWPPteVA TLBI-sync.ISHsWWPteVAPteOA.VA PosWWPteOA.VAP
+Relax=[PteVA,TLBI-sync.ISHsWW,PteOA,PteVA]
+Safe=Coe PosWW
+Generator=diy7 (version 7.56+02~dev)
+Com=Co Co
+Orig=TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAP PosWWPPteVA TLBI-sync.ISHsWWPteVAPteOA.VA PosWWPteOA.VAP CoePPteVA
+{
+pteval_t 0:X5;
+ int x=0; int y=4;
+0:X0=PTE(x); 0:X1=(oa:PA(x), valid:0); 0:X2=(oa:PA(y)); 0:X3=x;
+1:X1=x; 1:X2=PTE(x); 1:X3=(oa:PA(y), valid:0); 1:X4=(oa:PA(y));
+}
+ P0              | P1              ;
+ STR X1,[X0]     | MOV W0,#1       ;
+ LSR X4,X3,#12   | STR W0,[X1]     ;
+ DSB ISH         | STR X3,[X2]     ;
+ TLBI VAAE1IS,X4 | LSR X6,X1,#12   ;
+ DSB ISH         | DSB ISH         ;
+ STR X2,[X0]     | TLBI VAAE1IS,X6 ;
+ LDR X5,[X0]     | DSB ISH         ;
+                 | STR X4,[X2]     ;
+                 | MOV W5,#2       ;
+                 | STR W5,[X1]     ;
+exists (0:X5=(oa:PA(y)) /\ [x]=2 /\ ~fault(P1,x)) \/ (0:X5=(oa:PA(y)) /\ [x]=2 /\ fault(P1,x,MMU:Translation)) \/ (0:X5=(oa:PA(y), valid:0) /\ [x]=1 /\ ~fault(P1,x)) \/ (0:X5=(oa:PA(y), valid:0) /\ [x]=1 /\ fault(P1,x,MMU:Translation))
+</pre></body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test Nikos</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-Nikos">Test</a> <a href="unseen-src/Nikos.litmus">Nikos</a></h3>
+<img src="unseen-img/Nikos-00.png">
+<pre class="verbatim">AArch64 Nikos 
+{
+0:X2=pte_x;
+0:X4=x;
+0:X0=(oa:phy_x,valid:0);
+}
+P0 ;
+STR X0,[X2]    ;
+DSB ISH        ;
+LSR X9,X4,#12  ;
+TLBI VAAE1IS,X9;
+DSB ISH        ;
+L1: LDR X6,[X4];
+exists (~fault(P0:L1,x))
+</pre></body>
+</html>

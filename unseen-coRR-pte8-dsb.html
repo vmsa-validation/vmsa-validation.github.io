@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test coRR-pte8-dsb</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-coRR-pte8-dsb">Test</a> <a href="unseen-src/coRR-pte8-dsb.litmus">coRR-pte8-dsb</a></h3>
+<img src="unseen-img/coRR-pte8-dsb-00.png">
+<pre class="verbatim">AArch64 coRR-pte8-dsb
+{
+x=1;
+pte_x=(valid:0);
+
+0:X1=x;
+0:X3=x;
+
+1:X3=pte_x;
+1:X4=(oa:phy_x);
+}
+P0             | P1             ;
+L1:LDR W2,[X1] | STR X4, [X3]   ;
+DSB SY         |                ;
+L0:LDR W4,[X3] |                ;
+exists (0:X2=1 /\ fault(P0:L0,x,MMU:Translation))
+</pre></body>
+</html>

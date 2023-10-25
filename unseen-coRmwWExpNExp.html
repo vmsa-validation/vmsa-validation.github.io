@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test coRmwWExpNExp</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-coRmwWExpNExp">Test</a> <a href="unseen-src/coRmwWExpNExp.litmus">coRmwWExpNExp</a></h3>
+<img src="unseen-img/coRmwWExpNExp-00.png"> <img src="unseen-img/coRmwWExpNExp-01.png">
+<pre class="verbatim">AArch64 coRmwWExpNExp
+TTHM=HD
+{
+int x; int y;
+0:X1=pte_x;
+pte_x=(oa:phy_x,db:0,dbm:1,valid:1);
+0:X2=(oa:phy_y,db:0,dbm:1,valid:1);
+0:X4=x;
+}
+P0            ;
+SWP X2,X9,[X1];
+MOV W3,#1     ;
+STR W3,[X4]   ;
+exists ([PTE(x)]=(oa:PA(y), dbm:1, db:0) /\ [x]=1)
+</pre></body>
+</html>

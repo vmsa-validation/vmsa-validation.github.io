@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test NOP+AF</title>
+</head>
+<body>
+
+<h3><a id="tst@Kylo-NOP+AF">Test</a> <a href="Kylo-src/NOP+AF.litmus">NOP+AF</a></h3>
+<img src="Kylo-img/NOP+AF-00.png">
+<pre class="verbatim">AArch64 NOP+AF
+TTHM=HA
+{
+int x=0;
+pte_x=(af:0);
+}
+ P0   ;
+NOP   ;
+exists ([PTE(x)]=(oa:PA(x)))
+</pre></body>
+</html>

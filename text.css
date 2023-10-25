@@ -1,0 +1,34 @@
+.c000{border-spacing:0;}
+.c001{color:blue}
+.c002{color:red}
+.c003{font-family:monospace}
+.c004{font-style:italic}
+.c005{font-weight:bold}
+.c006{text-align:center;border:solid 1px;white-space:nowrap}
+.c007{text-align:left;border:solid 1px;white-space:nowrap}
+.c008{text-align:right;border:solid 1px;white-space:nowrap}
+.dd-description{margin:0ex 0ex 1ex 4ex;}
+.dt-description{margin:0ex;}
+div.footnotetext P{margin:0px; text-indent:1em;}
+.title{margin:2ex auto;text-align:center}
+.titlemain{margin:1ex 2ex 2ex 1ex;}
+.center{text-align:center;margin-left:auto;margin-right:auto;}
+.flushleft{text-align:left;margin-left:0ex;margin-right:auto;}
+div table{margin-left:inherit;margin-right:inherit;margin-bottom:2px;margin-top:2px}
+td table{margin:auto;}
+table{border-collapse:collapse;}
+td{padding:0;}
+.cellpadding1 tr td{padding:1px;}
+pre{text-align:left;margin-left:0ex;margin-right:auto;}
+blockquote{margin-left:4ex;margin-right:4ex;text-align:left;}
+td p{margin:0px;}
+.quote{margin-left:3em;margin-right:3em;text-align:inherit;text-indent:0pt}
+.horizontal-rule{border:none;background-color:black;}
+body{margin-left:2ex;margin-right:2ex;background-color:white}
+a:link{color:#595959;text-decoration:underline;}
+a:visited{color:black;text-decoration:underline;}
+a:hover{color:black;text-decoration:none;background-color:#B2B2B2}
+.title{border-top:solid 4px;border-bottom:solid 4px;}
+.titlemain{}
+.section{padding:0.5ex 0ex;border-bottom:solid 3px;}
+.subsection{padding:0.5ex 0ex;border-bottom:solid 2px;}

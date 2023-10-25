@@ -1,0 +1,17 @@
+AArch64 Jeff1+64
+{
+pte_x=(valid:1,oa:phy_x);
+0:X2=pte_x;
+0:X1=(valid:0,oa:phy_x);
+0:X3=x;
+1:X2=pte_x;
+1:X3=x;
+int64_t x;
+int64_t 0:X10;
+}
+P0               | P1;
+L0: LDR X10,[X3] | LDAR X7,[X2];
+                 | MOV X4, #1  ;
+MOV W7,#1        | STLR X4,[X3];
+STR X1,[X2]      |             ;
+exists (0:X10=1 /\ 1:X7=(oa:PA(x), valid:0) /\ ~fault(P0:L0,x))

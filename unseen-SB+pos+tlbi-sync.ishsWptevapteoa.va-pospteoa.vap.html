@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test SB+pos+tlbi-sync.ishsWptevapteoa.va-pospteoa.vap</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-SB+pos+tlbi-sync.ishsWptevapteoa.va-pospteoa.vap">Test</a> <a href="unseen-src/SB+pos+tlbi-sync.ishsWptevapteoa.va-pospteoa.vap.litmus">SB+pos+tlbi-sync.ishsWptevapteoa.va-pospteoa.vap</a></h3>
+<img src="unseen-img/SB+pos+tlbi-sync.ishsWptevapteoa.va-pospteoa.vap-00.png"> <img src="unseen-img/SB+pos+tlbi-sync.ishsWptevapteoa.va-pospteoa.vap-01.png"> <img src="unseen-img/SB+pos+tlbi-sync.ishsWptevapteoa.va-pospteoa.vap-02.png"> <img src="unseen-img/SB+pos+tlbi-sync.ishsWptevapteoa.va-pospteoa.vap-03.png">&#X2026;
+<pre class="verbatim">AArch64 SB+pos+tlbi-sync.ishsWptevapteoa.va-pospteoa.vap
+"PosWR FrePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA PosWRPteOA.VAP Fre"
+Variant=imprecise
+Cycle=Fre PosWR FrePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA PosWRPteOA.VAP
+Relax=[PteVA,TLBI-sync.ISHsWW,PteOA,PteVA]
+Safe=Fre PosWR
+Generator=diy7 (version 7.56+02~dev)
+Com=Fr Fr
+Orig=PosWR FrePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA PosWRPteOA.VAP Fre
+{ int x=0; int y=4;
+0:X1=x;
+1:X0=PTE(x); 1:X1=(oa:PA(x), valid:0); 1:X2=(oa:PA(y)); 1:X3=x;
+}
+ P0          | P1              ;
+ MOV W0,#1   | STR X1,[X0]     ;
+ STR W0,[X1] | LSR X5,X3,#12   ;
+ LDR W2,[X1] | DSB ISH         ;
+             | TLBI VAAE1IS,X5 ;
+             | DSB ISH         ;
+             | STR X2,[X0]     ;
+             | LDR W4,[X3]     ;
+exists (0:X2=1 /\ 1:X4=0 /\ ~fault(P0,x) /\ ~fault(P1,x)) \/ (0:X2=1 /\ 1:X4=0 /\ fault(P0,x,MMU:Translation) /\ ~fault(P1,x)) \/ (0:X2=1 /\ 1:X4=0 /\ fault(P0,x,MMU:Translation) /\ fault(P1,x,MMU:Translation)) \/ (0:X2=1 /\ 1:X4=0 /\ fault(P1,x,MMU:Translation) /\ ~fault(P0,x)) \/ (0:X2=4 /\ 1:X4=1 /\ ~fault(P0,x) /\ ~fault(P1,x)) \/ (0:X2=4 /\ 1:X4=1 /\ fault(P0,x,MMU:Translation) /\ ~fault(P1,x)) \/ (0:X2=4 /\ 1:X4=1 /\ fault(P0,x,MMU:Translation) /\ fault(P1,x,MMU:Translation)) \/ (0:X2=4 /\ 1:X4=1 /\ fault(P1,x,MMU:Translation) /\ ~fault(P0,x))
+</pre></body>
+</html>

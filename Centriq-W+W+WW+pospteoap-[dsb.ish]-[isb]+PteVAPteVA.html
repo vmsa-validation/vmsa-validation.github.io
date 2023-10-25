@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test W+W+WW+pospteoap-[dsb.ish]-[isb]+PteVAPteVA</title>
+</head>
+<body>
+
+<h3><a id="tst@Centriq-W+W+WW+pospteoap-[dsb.ish]-[isb]+PteVAPteVA">Test</a> <a href="Centriq-src/W+W+WW+pospteoap-[dsb.ish]-[isb]+PteVAPteVA.litmus">W+W+WW+pospteoap-[dsb.ish]-[isb]+PteVAPteVA</a></h3>
+<img src="Centriq-img/W+W+WW+pospteoap-[dsb.ish]-[isb]+PteVAPteVA-00.png"> <img src="Centriq-img/W+W+WW+pospteoap-[dsb.ish]-[isb]+PteVAPteVA-01.png"> <img src="Centriq-img/W+W+WW+pospteoap-[dsb.ish]-[isb]+PteVAPteVA-02.png"> <img src="Centriq-img/W+W+WW+pospteoap-[dsb.ish]-[isb]+PteVAPteVA-03.png">&#X2026;
+<pre class="verbatim">AArch64 W+W+WW+pospteoap-[dsb.ish]-[isb]+PteVAPteVA
+"CoePteVAPteVA CoePteVAPteOA PosWWPteOAP DSB.ISH ISB CoePPteVA"
+variant=precise
+Cycle=ISB CoePPteVA CoePteVAPteVA CoePteVAPteOA PosWWPteOAP DSB.ISH
+Relax=PteOA PteVA
+Safe=Coe [PosWW,DSB.ISH,ISB]
+Generator=diy7 (version 7.56+02~dev)
+Com=Co Co Co
+Orig=CoePteVAPteVA CoePteVAPteOA PosWWPteOAP DSB.ISH ISB CoePPteVA
+{
+pteval_t 1:X2; pteval_t 0:X2;
+ int x=0; int y=4;
+0:X0=PTE(x); 0:X1=(oa:PA(x), valid:0);
+1:X0=PTE(x); 1:X1=(oa:PA(x));
+2:X0=PTE(x); 2:X1=(oa:PA(y)); 2:X3=x;
+}
+ P0          | P1          | P2          ;
+ STR X1,[X0] | STR X1,[X0] | STR X1,[X0] ;
+ LDR X2,[X0] | LDR X2,[X0] | DSB ISH     ;
+             |             | ISB         ;
+             |             | MOV W2,#1   ;
+             |             | STR W2,[X3] ;
+exists (0:X2=(oa:PA(x)) /\ 1:X2=(oa:PA(x)) /\ [x]=0 /\ ~fault(P2,x)) \/ (0:X2=(oa:PA(x)) /\ 1:X2=(oa:PA(x)) /\ [x]=0 /\ fault(P2,x)) \/ (0:X2=(oa:PA(x), valid:0) /\ 1:X2=(oa:PA(x), valid:0) /\ [x]=0 /\ ~fault(P2,x)) \/ (0:X2=(oa:PA(x), valid:0) /\ 1:X2=(oa:PA(x), valid:0) /\ [x]=0 /\ fault(P2,x)) \/ (0:X2=(oa:PA(x), valid:0) /\ 1:X2=(oa:PA(y)) /\ [x]=0 /\ ~fault(P2,x)) \/ (0:X2=(oa:PA(x), valid:0) /\ 1:X2=(oa:PA(y)) /\ [x]=0 /\ fault(P2,x)) \/ (0:X2=(oa:PA(y)) /\ 1:X2=(oa:PA(x)) /\ [x]=0 /\ ~fault(P2,x))
+</pre></body>
+</html>

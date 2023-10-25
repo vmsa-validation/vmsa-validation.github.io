@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test MP+bbm+dmbld</title>
+</head>
+<body>
+
+<h3><a id="tst@basic-MP+bbm+dmbld">Test</a> <a href="basic-src/MP+bbm+dmbld.litmus">MP+bbm+dmbld</a></h3>
+<img src="basic-img/MP+bbm+dmbld-00.png">
+<pre class="verbatim">AArch64 MP+bbm+dmbld 
+{
+0:X2=pte_x;
+0:X1=(oa:phy_x,valid:0);
+0:X5=(oa:phy_z);
+z=1;
+0:X8=z; 1:X8=z;
+0:X3=y; 1:X3=y;
+0:X4=x; 1:X4=x;
+}
+P0              | P1             ;
+MOV W0,#1       |                ;
+STR W0,[X3]     |                ;
+DMB ST          |                ;
+STR X1,[X2]     | LDR W7,[X4]    ;
+DSB ISH         | DMB LD         ;
+LSR X9,X4,12    |                ;
+TLBI VAAE1IS,X9 |                ; 
+DSB ISH         |                ;
+STR X5,[X2]     | L0: LDR W5,[X3];
+exists(1:X7=1 /\ 1:X5=0 /\ ~fault(P1:L0,y))
+(*renamed MP+dmbst-publish+dmbld in tech report*)
+</pre></body>
+</html>

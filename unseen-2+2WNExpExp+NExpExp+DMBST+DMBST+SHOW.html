@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test 2+2WNExpExp+NExpNExp+DMBST+DMBST+SHOW</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-2+2WNExpExp+NExpExp+DMBST+DMBST+SHOW">Test</a> <a href="unseen-src/2+2WNExpExp+NExpExp+DMBST+DMBST+SHOW.litmus">2+2WNExpExp+NExpNExp+DMBST+DMBST+SHOW</a></h3>
+<img src="unseen-img/2+2WNExpExp+NExpExp+DMBST+DMBST+SHOW-00.png">
+<pre class="verbatim">AArch64 2+2WNExpExp+NExpNExp+DMBST+DMBST+SHOW
+TTHM=HD
+{
+int z;
+0:X2=x; 1:X4=pte_x;
+0:X3=y; 1:X6=pte_y; 
+1:X5=(oa:phy_z,db:0,dbm:1);
+1:X7=(oa:phy_y,db:0,dbm:1);
+pte_x=(oa:phy_x,db:0,dbm:1);
+pte_y=(oa:phy_y,db:1,dbm:1);
+}
+P0          | P1         ;
+MOV W8,#1   | STR X5,[X4]; 
+LY:         | DMB ST     ;
+STR W8,[X3] | STR X7,[X6];
+DMB ST      |            ;
+MOV W9,#1   |            ;
+LX:         |            ;
+STR W9,[X2] |            ;
+exists ([PTE(x)]=(oa:PA(z), dbm:1, db:0) /\ [PTE(y)]=(oa:PA(y), dbm:1) /\ [x]=1 /\ [y]=1 /\ [z]=0 /\ ~fault(P0:LX,x) /\ ~fault(P0:LY,y))
+</pre></body>
+</html>

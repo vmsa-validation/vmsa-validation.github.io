@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test coRRExpNExp+DSB-ISB+BIS</title>
+</head>
+<body>
+
+<h3><a id="tst@Cheilly-coRRExpNExp+DSB-ISB+BIS">Test</a> <a href="Cheilly-src/coRRExpNExp+DSB-ISB+BIS.litmus">coRRExpNExp+DSB-ISB+BIS</a></h3>
+<img src="Cheilly-img/coRRExpNExp+DSB-ISB+BIS-00.png"> <img src="Cheilly-img/coRRExpNExp+DSB-ISB+BIS-01.png">
+<pre class="verbatim">AArch64 coRRExpNExp+DSB-ISB+BIS
+{
+pte_x=(valid:0);
+0:X1=pte_x; 0:X3=x;
+1:X1=pte_x; 
+1:X7=(oa:phy_x,db:1);
+1:X2=(oa:phy_y,db:1); 
+y=1; x=2;
+}
+ P0          | P1         ;
+ LDR X2,[X1] | STR X7,[X1];
+ DSB ISH     | STR X2,[X1];
+ ISB         |            ;
+L0:          |            ;
+ LDR W4,[X3] |            ;
+exists (0:X2=(oa:PA(y)) /\ 0:X4=2 /\ ~fault(P0:L0,x))
+</pre></body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test LDR-BY2PTE-1</title>
+</head>
+<body>
+
+<h3><a id="tst@basic-LDR-BY2PTE-1">Test</a> <a href="basic-src/LDR-BY2PTE-1.litmus">LDR-BY2PTE-1</a></h3>
+<img src="basic-img/LDR-BY2PTE-1-00.png"> <img src="basic-img/LDR-BY2PTE-1-01.png">
+<pre class="verbatim">AArch64 LDR-BY2PTE-1
+TTHM=HA
+{
+  int x = 1 ;
+  pte_x0 = (oa:phy_x, af:0) ;
+  pte_x1 = (oa:phy_x, af:1) ;
+  0:X2=x0 ;
+  1:X2=x1 ;
+  1:X4=pte_x0 ;
+}
+  P0          |  P1         ;
+ LDR W0,[X2]  | MOV W0,#2   ;
+              | STR W0,[X2] ;
+              | DMB SY      ;
+              | LDR X8,[X4] ;
+exists 0:X0=1 /\ 1:X8=(oa:phy_x, af:0)
+</pre></body>
+</html>

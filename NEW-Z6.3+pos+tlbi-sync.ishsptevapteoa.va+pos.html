@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test Z6.3+pos+tlbi-sync.ishsptevapteoa.va+pos</title>
+</head>
+<body>
+
+<h3><a id="tst@NEW-Z6.3+pos+tlbi-sync.ishsptevapteoa.va+pos">Test</a> <a href="NEW-src/Z6.3+pos+tlbi-sync.ishsptevapteoa.va+pos.litmus">Z6.3+pos+tlbi-sync.ishsptevapteoa.va+pos</a></h3>
+<img src="NEW-img/Z6.3+pos+tlbi-sync.ishsptevapteoa.va+pos-00.png"> <img src="NEW-img/Z6.3+pos+tlbi-sync.ishsptevapteoa.va+pos-01.png"> <img src="NEW-img/Z6.3+pos+tlbi-sync.ishsptevapteoa.va+pos-02.png"> <img src="NEW-img/Z6.3+pos+tlbi-sync.ishsptevapteoa.va+pos-03.png">
+<pre class="verbatim">AArch64 Z6.3+pos+tlbi-sync.ishsptevapteoa.va+pos
+"PosWW CoePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA RfePteOA.VAP PosRR Fre"
+Variant=imprecise
+Cycle=Fre PosWW CoePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA RfePteOA.VAP PosRR
+Relax=[PteVA,TLBI-sync.ISHsWW,PteOA,PteVA]
+Safe=Rfe Fre Coe PosWW PosRR
+Generator=diy7 (version 7.56+02~dev)
+Com=Co Rf Fr
+Orig=PosWW CoePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA RfePteOA.VAP PosRR Fre
+{ int x=0; int y=4;
+0:X1=x;
+1:X0=PTE(x); 1:X1=(oa:PA(x), valid:0); 1:X2=(oa:PA(y)); 1:X3=x;
+2:X0=x;
+}
+ P0          | P1              | P2          ;
+ MOV W0,#1   | STR X1,[X0]     | LDR W1,[X0] ;
+ STR W0,[X1] | LSR X4,X3,#12   | LDR W2,[X0] ;
+ MOV W2,#2   | DSB ISH         |             ;
+ STR W2,[X1] | TLBI VAAE1IS,X4 |             ;
+             | DSB ISH         |             ;
+             | STR X2,[X0]     |             ;
+exists (2:X1=0 /\ 2:X2=1 /\ [x]=0 /\ ~fault(P0,x) /\ ~fault(P2,x))
+</pre></body>
+</html>

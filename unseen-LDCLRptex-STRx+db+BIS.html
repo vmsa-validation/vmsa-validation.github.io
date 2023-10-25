@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test LDCLRptex-STRx+db+BIS</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-LDCLRptex-STRx+db+BIS">Test</a> <a href="unseen-src/LDCLRptex-STRx+db+BIS.litmus">LDCLRptex-STRx+db+BIS</a></h3>
+<img src="unseen-img/LDCLRptex-STRx+db+BIS-00.png"> <img src="unseen-img/LDCLRptex-STRx+db+BIS-01.png"> <img src="unseen-img/LDCLRptex-STRx+db+BIS-02.png"> <img src="unseen-img/LDCLRptex-STRx+db+BIS-03.png">&#X2026;
+<pre class="verbatim">AArch64 LDCLRptex-STRx+db+BIS
+TTHM=HA HD
+{
+int x=0;
+0:X2=x;
+0:X4=pte_x;
+pte_x=(af:0,db:0,dbm:1);
+}
+
+P0                ;
+ MOV X9,#1        ;
+ LDCLR X9,X6,[X4] ;
+ MOV W1,#1        ;
+L0:               ; 
+ STR W1,[X2]      ;
+(* Final pte_x value with db:1 and valid:0, while 0:X6 has db:0 *) 
+exists (0:X6=(oa:PA(x), dbm:1) /\ [PTE(x)]=(oa:PA(x), valid:0, dbm:1) /\ [x]=1 /\ ~fault(P0:L0,x))
+</pre></body>
+</html>

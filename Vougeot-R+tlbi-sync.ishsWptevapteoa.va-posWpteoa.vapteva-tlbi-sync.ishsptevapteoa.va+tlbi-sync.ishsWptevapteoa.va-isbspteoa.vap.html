@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test R+tlbi-sync.ishsWptevapteoa.va-posWpteoa.vapteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap</title>
+</head>
+<body>
+
+<h3><a id="tst@Vougeot-R+tlbi-sync.ishsWptevapteoa.va-posWpteoa.vapteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap">Test</a> <a href="Vougeot-src/R+tlbi-sync.ishsWptevapteoa.va-posWpteoa.vapteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap.litmus">R+tlbi-sync.ishsWptevapteoa.va-posWpteoa.vapteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap</a></h3>
+<img src="Vougeot-img/R+tlbi-sync.ishsWptevapteoa.va-posWpteoa.vapteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap-00.png"> <img src="Vougeot-img/R+tlbi-sync.ishsWptevapteoa.va-posWpteoa.vapteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap-01.png"> <img src="Vougeot-img/R+tlbi-sync.ishsWptevapteoa.va-posWpteoa.vapteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap-02.png"> <img src="Vougeot-img/R+tlbi-sync.ishsWptevapteoa.va-posWpteoa.vapteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap-03.png">&#X2026;
+<pre class="verbatim">AArch64 R+tlbi-sync.ishsWptevapteoa.va-posWpteoa.vapteva-tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbspteoa.vap
+"TLBI-sync.ISHsWWPteVAPteOA.VA PosWWPteOA.VAPteVA TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWRPteOA.VAP FrePPteVA"
+Variant=imprecise
+Cycle=FrePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA PosWWPteOA.VAPteVA TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWRPteOA.VAP
+Relax=[PteVA,TLBI-sync.ISHsWW,PteOA,PteVA] [PteVA,TLBI-sync.ISHsWW,PteOA,PteVA,ISBsWR]
+Safe=Fre Coe PosWW
+Generator=diy7 (version 7.56+02~dev)
+Com=Co Fr
+Orig=TLBI-sync.ISHsWWPteVAPteOA.VA PosWWPteOA.VAPteVA TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWRPteOA.VAP FrePPteVA
+{
+pteval_t 0:X6;
+ int x=0; int y=4;
+0:X0=PTE(x); 0:X1=(oa:PA(x), valid:0); 0:X2=(oa:PA(y)); 0:X3=(oa:PA(y), valid:0); 0:X4=x;
+1:X0=PTE(x); 1:X1=(oa:PA(y), valid:0); 1:X2=(oa:PA(y)); 1:X3=x;
+}
+ P0              | P1              ;
+ STR X1,[X0]     | STR X1,[X0]     ;
+ LSR X5,X4,#12   | LSR X5,X3,#12   ;
+ DSB ISH         | DSB ISH         ;
+ TLBI VAAE1IS,X5 | TLBI VAAE1IS,X5 ;
+ DSB ISH         | DSB ISH         ;
+ STR X2,[X0]     | STR X2,[X0]     ;
+ STR X3,[X0]     | ISB             ;
+ LSR X5,X4,#12   | LDR W4,[X3]     ;
+ DSB ISH         |                 ;
+ TLBI VAAE1IS,X5 |                 ;
+ DSB ISH         |                 ;
+ STR X2,[X0]     |                 ;
+ LDR X6,[X0]     |                 ;
+exists (0:X6=(oa:PA(y), valid:0) /\ 1:X4=4 /\ fault(P1,x,MMU:Translation))
+</pre></body>
+</html>

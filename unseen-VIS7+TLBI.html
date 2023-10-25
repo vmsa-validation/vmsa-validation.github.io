@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test VIS7+TLBI</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-VIS7+TLBI">Test</a> <a href="unseen-src/VIS7+TLBI.litmus">VIS7+TLBI</a></h3>
+<img src="unseen-img/VIS7+TLBI-00.png">
+<pre class="verbatim">AArch64 VIS7+TLBI
+
+{x=1; y=2; 0:X1=x; 0:X2=pte_y; 0:X3=pte_x;
+pte_x=(db:1);
+pte_y=(db:1);}
+
+ P0              ;
+ LDR X5,[X2]     ;
+ STR X5,[X3]     ;
+ LSR X7,X1,#12   ;
+ DSB ISH         ;
+ TLBI VAAE1IS,X7 ;
+ DSB ISH         ;
+ LDR W4,[X1]     ;
+
+exists (0:X4=1)
+</pre></body>
+</html>

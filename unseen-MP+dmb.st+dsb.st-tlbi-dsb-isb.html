@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test MP+dmb.st+dsb.st-tlbi-dsb-isb</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-MP+dmb.st+dsb.st-tlbi-dsb-isb">Test</a> <a href="unseen-src/MP+dmb.st+dsb.st-tlbi-dsb-isb.litmus">MP+dmb.st+dsb.st-tlbi-dsb-isb</a></h3>
+<img src="unseen-img/MP+dmb.st+dsb.st-tlbi-dsb-isb-00.png">
+<pre class="verbatim">AArch64 MP+dmb.st+dsb.st-tlbi-dsb-isb
+{
+pte_x=(valid:1);
+
+0:X1=(oa:phy_x,valid:0);
+0:X2=pte_x;
+0:X8=y;
+
+1:X8=y;
+1:X3=x;
+}
+P0           | P1;
+STR X1,[X2]  | LDR W7,[X8]     ;
+DMB ST       | DSB ST          ;
+MOV W7,#1    | LSR X9,X3,#12   ;
+STR W7,[X8]  | TLBI VAAE1IS,X9 ;
+             | DSB ISH         ;
+             | ISB             ;
+             |L0:              ;
+             | LDR W4,[X3]     ;
+exists (1:X7=1 /\ ~fault(P1:L0,x))
+</pre></body>
+</html>

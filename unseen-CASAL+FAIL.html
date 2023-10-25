@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test CASAL+FAIL</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-CASAL+FAIL">Test</a> <a href="unseen-src/CASAL+FAIL.litmus">CASAL+FAIL</a></h3>
+<img src="unseen-img/CASAL+FAIL-00.png">
+<pre class="verbatim">AArch64 CASAL+FAIL
+Variant=skip
+{
+int x;
+int y;
+0:X1=(oa:PA(x),db:0);
+0:X2=y; 0:X4=PTE(x);
+1:X2=y; 1:X4=x;
+}
+
+  P0         | P1               ;
+ MOV W3,#1   | MOV W1,#0        ;
+ STR W3,[X2] | MOV W3,#1        ;
+ DSB ISH     |L0:               ;
+ STR X1,[X4] | CASAL W1,w3,[X4] ;
+             | LDR W5,[X2]      ;
+exists (1:X5=0 /\ fault(P1:L0,x,MMU:Permission))
+</pre></body>
+</html>

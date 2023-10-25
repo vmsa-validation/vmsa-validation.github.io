@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test JeffAnalogy-LDR</title>
+</head>
+<body>
+
+<h3><a id="tst@M1-JeffAnalogy-LDR">Test</a> <a href="M1-src/JeffAnalogy-LDR.litmus">JeffAnalogy-LDR</a></h3>
+<img src="M1-img/JeffAnalogy-LDR-00.png">
+<pre class="verbatim">AArch64 JeffAnalogy-LDR
+{
+0:X1=x; 0:X3=y;
+1:X1=x; 1:X3=y;
+}
+P0                     | P1           ;
+MOV W0, #1             |              ;
+SWP W0, W2, [X3]       | MOV W0, #1   ;
+EOR W4, W2, W2         | STR W0, [X1] ;
+LDR W5, [X1, W4, SXTW] | DMB ISH      ;
+                       | LDR  W7, [X3];
+exists (0:X5=0 /\ 1:X7=0)
+</pre></body>
+</html>

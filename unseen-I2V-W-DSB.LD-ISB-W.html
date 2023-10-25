@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test I2V-W-DSB.LD-ISB-W</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-I2V-W-DSB.LD-ISB-W">Test</a> <a href="unseen-src/I2V-W-DSB.LD-ISB-W.litmus">I2V-W-DSB.LD-ISB-W</a></h3>
+<img src="unseen-img/I2V-W-DSB.LD-ISB-W-00.png">
+<pre class="verbatim">AArch64 I2V-W-DSB.LD-ISB-W
+{
+pte_x=(oa:phy_x,valid:0);
+
+0:X3=pte_x;
+0:X2=(oa:phy_x,valid:1);
+
+0:X1=1;
+0:X4=x;
+}
+ P0            ;
+ STR X2,[X3]   ;
+ DSB LD        ;
+ ISB           ;
+L0:            ;
+ STR W1,[X4]   ;
+exists (fault(P0:L0,x,MMU:Translation))
+</pre></body>
+</html>

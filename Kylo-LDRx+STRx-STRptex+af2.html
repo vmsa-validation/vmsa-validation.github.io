@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test LDRx+STRx-STRptex+af2</title>
+</head>
+<body>
+
+<h3><a id="tst@Kylo-LDRx+STRx-STRptex+af2">Test</a> <a href="Kylo-src/LDRx+STRx-STRptex+af2.litmus">LDRx+STRx-STRptex+af2</a></h3>
+<img src="Kylo-img/LDRx+STRx-STRptex+af2-00.png"> <img src="Kylo-img/LDRx+STRx-STRptex+af2-01.png"> <img src="Kylo-img/LDRx+STRx-STRptex+af2-02.png"> <img src="Kylo-img/LDRx+STRx-STRptex+af2-03.png">&#X2026;
+<pre class="verbatim">AArch64 LDRx+STRx-STRptex+af2
+TTHM=HA
+{
+int x=0; int y=1; int z=0;
+pte_x=(af:0);
+pte_z=(oa:phy_y);
+0:X2=x;
+1:X4=z; 1:X6=pte_x;
+1:X3=(oa:phy_y,af:0)
+}
+ P0         | P1          ;
+LDR W1,[X2] | MOV W1,#2   ;
+            | STR W1,[X4] ;
+            | DSB ISH     ;
+            | STR X3,[X6] ;
+exists (0:X1=0 /\ [PTE(x)]=(oa:PA(y)) /\ [y]=2)
+</pre></body>
+</html>

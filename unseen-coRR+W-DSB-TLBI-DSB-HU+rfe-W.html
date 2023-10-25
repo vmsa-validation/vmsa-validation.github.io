@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test coRR+W-DSB-TLBI-DSB-HU+rfe-W</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-coRR+W-DSB-TLBI-DSB-HU+rfe-W">Test</a> <a href="unseen-src/coRR+W-DSB-TLBI-DSB-HU+rfe-W.litmus">coRR+W-DSB-TLBI-DSB-HU+rfe-W</a></h3>
+<img src="unseen-img/coRR+W-DSB-TLBI-DSB-HU+rfe-W-00.png"> <img src="unseen-img/coRR+W-DSB-TLBI-DSB-HU+rfe-W-01.png"> <img src="unseen-img/coRR+W-DSB-TLBI-DSB-HU+rfe-W-02.png"> <img src="unseen-img/coRR+W-DSB-TLBI-DSB-HU+rfe-W-03.png">
+<pre class="verbatim">AArch64 coRR+W-DSB-TLBI-DSB-HU+rfe-W
+TTHM=HD
+{
+pte_z=(dbm:1,db:0);
+y=1;
+
+0:X1=x;
+
+1:X3=pte_x;
+1:X0=(oa:phy_x,valid:0);
+1:X1=x;
+1:X5=1;
+1:X6=z;
+
+2:X6=pte_z;
+2:X3=pte_x;
+2:X4=(oa:phy_y);
+}
+P0             | P1              | P2          ;
+L1:LDR W2,[X1] | STR X0,[X3]     | LDR X0,[X6] ;
+L0:LDR W4,[X1] | DSB ISH         | DMB ISH     ;
+               | LSR X9,X1,#12   | STR X4,[X3] ;
+               | TLBI VAAE1IS,X9 |             ;
+               | DSB ISH         |             ;
+               | STR W5,[X6]     |             ;
+exists (0:X2=1 /\ 0:X4=0 /\ 2:X0=(oa:PA(z), dbm:1) /\ ~fault(P0:L0,x)) \/ (0:X2=1 /\ 0:X4=0 /\ 2:X0=(oa:PA(z), dbm:1) /\ fault(P0:L0,x,MMU:Translation))
+</pre></body>
+</html>

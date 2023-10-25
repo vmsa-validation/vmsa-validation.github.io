@@ -1,0 +1,25 @@
+AArch64 SB+pos+tlbi-sync.ishsWptevapteoa.va-isbsWpteoa.vap-pos
+"PosWR FrePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWWPteOA.VAP PosWR Fre"
+Variant=imprecise
+Cycle=Fre PosWR FrePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWWPteOA.VAP PosWR
+Relax=[PteVA,TLBI-sync.ISHsWW,PteOA,PteVA,ISBsWW]
+Safe=Fre PosWR
+Generator=diy7 (version 7.56+02~dev)
+Com=Fr Fr
+Orig=PosWR FrePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWWPteOA.VAP PosWR Fre
+{ int x=0; int y=4;
+0:X1=x;
+1:X0=PTE(x); 1:X1=(oa:PA(x), valid:0); 1:X2=(oa:PA(y)); 1:X4=x;
+}
+ P0          | P1              ;
+ MOV W0,#1   | STR X1,[X0]     ;
+ STR W0,[X1] | LSR X6,X4,#12   ;
+ LDR W2,[X1] | DSB ISH         ;
+             | TLBI VAAE1IS,X6 ;
+             | DSB ISH         ;
+             | STR X2,[X0]     ;
+             | ISB             ;
+             | MOV W3,#2       ;
+             | STR W3,[X4]     ;
+             | LDR W5,[X4]     ;
+exists (0:X2=1 /\ 1:X5=2 /\ [x]=1 /\ fault(P0,x) /\ ~fault(P1,x))

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test 2+2W+TLBI+VaToInv+01</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-2+2W+TLBI+VaToInv+01">Test</a> <a href="unseen-src/2+2W+TLBI+VaToInv+01.litmus">2+2W+TLBI+VaToInv+01</a></h3>
+<img src="unseen-img/2+2W+TLBI+VaToInv+01-00.png">
+<pre class="verbatim">AArch64 2+2W+TLBI+VaToInv+01
+Variant=fatal
+{
+int x=1;
+int y=1;
+0:X1=(oa:phy_x,valid:0);
+0:X2=pte_x;
+0:X8=y;
+
+1:X1=(oa:phy_y,valid:0);
+1:X2=pte_y;
+1:X8=x;
+
+}
+  P0             | P1              ;
+ STR X1,[X2]     | STR X1,[X2]     ;
+ LSR X9,X8,#12   | LSR X9,X8,#12   ;
+ TLBI VAAE1IS,X9 | TLBI VAAE1IS,X9 ;
+ DSB ISH         | DSB ISH         ;
+ ISB             | ISB             ;
+ LDR W4,[X8]     | LDR W4,[X8]     ;
+
+exists (0:X4=1 /\ 1:X4=1 /\ ~fault(P0,y) /\ ~fault(P1,x))
+</pre></body>
+</html>

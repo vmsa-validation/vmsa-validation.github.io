@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test LDR-AF</title>
+</head>
+<body>
+
+<h3><a id="tst@basic-LDR-AF">Test</a> <a href="basic-src/LDR-AF.litmus">LDR-AF</a></h3>
+<img src="basic-img/LDR-AF-00.png"> <img src="basic-img/LDR-AF-01.png">
+<pre class="verbatim">AArch64 LDR-AF
+TTHM=HA
+{
+int x=1;
+pte_x = (af:0);
+0:X2=x;
+}
+  P0            ;
+L0:             ;
+ LDR   W0,[X2] ;
+forall 0:X0=1 /\ pte_x=(af:1) /\ ~fault(P0:L0,x)
+</pre></body>
+</html>

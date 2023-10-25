@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test STRptex+AF0+BIS</title>
+</head>
+<body>
+
+<h3><a id="tst@Kylo-STRptex+AF0+BIS">Test</a> <a href="Kylo-src/STRptex+AF0+BIS.litmus">STRptex+AF0+BIS</a></h3>
+<img src="Kylo-img/STRptex+AF0+BIS-00.png"> <img src="Kylo-img/STRptex+AF0+BIS-01.png"> <img src="Kylo-img/STRptex+AF0+BIS-02.png"> <img src="Kylo-img/STRptex+AF0+BIS-03.png">&#X2026;
+<pre class="verbatim">AArch64 STRptex+AF0+BIS
+TTHM=HA
+{
+int x=0; int y=1;
+pte_x=(af:0);
+0:X0=pte_x;
+0:X2=(oa:phy_y,af:0);
+pteval_t 0:X4;
+}
+ P0         ;
+LDR X4,[X0] ;
+STR X2,[X0] ;
+exists (0:X4=(oa:PA(x)) /\ [PTE(x)]=(oa:PA(y))) \/ (0:X4=(oa:PA(x)) /\ [PTE(x)]=(oa:PA(y), af:0)) \/ (0:X4=(oa:PA(x), af:0) /\ [PTE(x)]=(oa:PA(y)))
+</pre></body>
+</html>

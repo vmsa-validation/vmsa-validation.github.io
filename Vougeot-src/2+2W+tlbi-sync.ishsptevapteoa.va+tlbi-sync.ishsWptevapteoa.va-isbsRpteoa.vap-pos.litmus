@@ -1,0 +1,27 @@
+AArch64 2+2W+tlbi-sync.ishsptevapteoa.va+tlbi-sync.ishsWptevapteoa.va-isbsRpteoa.vap-pos
+"TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWRPteOA.VAP PosRW CoePPteVA"
+Variant=imprecise
+Cycle=PosRW CoePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWRPteOA.VAP
+Relax=[PteVA,TLBI-sync.ISHsWW,PteOA,PteVA] [PteVA,TLBI-sync.ISHsWW,PteOA,PteVA,ISBsWR]
+Safe=Coe PosRW
+Generator=diy7 (version 7.56+02~dev)
+Com=Co Co
+Orig=TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAPteVA TLBI-sync.ISHsWWPteVAPteOA.VA ISBsWRPteOA.VAP PosRW CoePPteVA
+{
+pteval_t 0:X5;
+ int x=0; int y=4;
+0:X0=PTE(x); 0:X1=(oa:PA(x), valid:0); 0:X2=(oa:PA(y)); 0:X3=x;
+1:X0=PTE(x); 1:X1=(oa:PA(y), valid:0); 1:X2=(oa:PA(y)); 1:X3=x;
+}
+ P0              | P1              ;
+ STR X1,[X0]     | STR X1,[X0]     ;
+ LSR X4,X3,#12   | LSR X6,X3,#12   ;
+ DSB ISH         | DSB ISH         ;
+ TLBI VAAE1IS,X4 | TLBI VAAE1IS,X6 ;
+ DSB ISH         | DSB ISH         ;
+ STR X2,[X0]     | STR X2,[X0]     ;
+ LDR X5,[X0]     | ISB             ;
+                 | LDR W4,[X3]     ;
+                 | MOV W5,#1       ;
+                 | STR W5,[X3]     ;
+exists (0:X5=(oa:PA(y), valid:0) /\ 1:X4=4 /\ fault(P1,x,MMU:Translation))

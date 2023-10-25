@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test FauxMP</title>
+</head>
+<body>
+
+<h3><a id="tst@Kylo-MP-HU">Test</a> <a href="Kylo-src/MP-HU.litmus">FauxMP</a></h3>
+<img src="Kylo-img/MP-HU-00.png"> <img src="Kylo-img/MP-HU-01.png">
+<pre class="verbatim">AArch64 FauxMP
+TTHM=HA
+{
+int y=0;
+[PTE(y)]=(valid:0);
+0:X2=x; 0:X4=PTE(y);
+0:X1=(oa:PA(y),af:0);
+1:X2=x; 1:X4=PTE(y);
+}
+  P0         |  P1         ;
+ MOV W3,#1   | LDR X1,[X4] ;
+ STR W3,[X2] | DMB LD      ;
+ DMB ST      | LDR W3,[X2] ;
+ STR X1,[X4] |             ;
+exists (1:X1=(oa:PA(y)) /\ 1:X3=1)
+</pre></body>
+</html>

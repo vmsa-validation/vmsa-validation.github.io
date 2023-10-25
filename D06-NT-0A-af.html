@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test NT-0A-af</title>
+</head>
+<body>
+
+<h3><a id="tst@D06-NT-0A-af">Test</a> <a href="D06-src/NT-0A-af.litmus">NT-0A-af</a></h3>
+<img src="D06-img/NT-0A-af-00.png"> <img src="D06-img/NT-0A-af-01.png"> <img src="D06-img/NT-0A-af-02.png"> <img src="D06-img/NT-0A-af-03.png">
+<pre class="verbatim">AArch64 NT-0A-af
+Variant=precise
+TTHM=P0:HA
+{
+pte_x=(af:0);
+x=1;
+0:X2=x; 0:X4=y;
+1:X2=x; 1:X4=y;
+}
+ P0          | P1          ;
+ LDR W0,[X2] | LDR W0,[X4] ;
+ DMB LD      | DMB LD      ;
+ MOV W0,#1   | MOV W1,#2   ;
+ STR W0,[X4] |L0:          ;
+             | STR W1,[X2] ;
+exists (0:X0=1 /\ 1:X0=1 /\ [x]=1 /\ fault(P1:L0,x,MMU:AccessFlag))
+</pre></body>
+</html>

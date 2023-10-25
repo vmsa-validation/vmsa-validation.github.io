@@ -1,0 +1,22 @@
+AArch64 Z6.3+tlbi-sync.ishsptevapteoa.va+pos+pos
+"TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAP PosWW Rfe PosRR FrePPteVA"
+Variant=imprecise
+Cycle=Rfe PosRR FrePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAP PosWW
+Relax=[PteVA,TLBI-sync.ISHsWW,PteOA,PteVA]
+Safe=Rfe Fre Coe PosWW PosRR
+Generator=diy7 (version 7.56+02~dev)
+Com=Co Rf Fr
+Orig=TLBI-sync.ISHsWWPteVAPteOA.VA CoePteOA.VAP PosWW Rfe PosRR FrePPteVA
+{ int x=0; int y=4;
+0:X0=PTE(x); 0:X1=(oa:PA(x), valid:0); 0:X2=(oa:PA(y)); 0:X3=x;
+1:X1=x;
+2:X0=x;
+}
+ P0              | P1          | P2          ;
+ STR X1,[X0]     | MOV W0,#1   | LDR W1,[X0] ;
+ LSR X4,X3,#12   | STR W0,[X1] | LDR W2,[X0] ;
+ DSB ISH         | MOV W2,#2   |             ;
+ TLBI VAAE1IS,X4 | STR W2,[X1] |             ;
+ DSB ISH         |             |             ;
+ STR X2,[X0]     |             |             ;
+exists (2:X1=0 /\ 2:X2=4 /\ [x]=1 /\ fault(P1,x,MMU:Translation) /\ ~fault(P2,x)) \/ (2:X1=1 /\ 2:X2=4 /\ [x]=1 /\ fault(P1,x,MMU:Translation) /\ fault(P2,x,MMU:Translation))

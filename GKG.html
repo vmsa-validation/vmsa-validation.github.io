@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Comparison of hypervisor and bare-metal executions on NDSP1 machines</title>
+</head>
+<body>
+<a href="specific.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="new.html"><img src="next_motif.svg" alt="Next"></a>
+<hr>
+<h2 class="section" id="GKG">Comparison of hypervisor and bare-metal executions on NDSP1 machines</h2>
+<ul>
+<li><a href="GKG.html#GKG-more">More behaviours</a>
+</li><li><a href="GKG.html#GKG-less">Less behaviours</a>
+</li></ul>
+<p>We remind that &#X201C;Kylo&#X201D; stands for kvm-based execution, while &#X201C;Godel&#X201D; stands for bare-metal on N1SDP machines. The following tables illustrate that all behaviours observed bare-metal are also observed under hypervisor control.</p><h3 class="subsection" id="GKG-more">More behaviours</h3>
+<div class="center"><a id="family@GKG-more"></a><div class="flushleft">There is no such test</div>
+
+</div><h3 class="subsection" id="GKG-less">Less behaviours</h3>
+<div class="center"><a id="family@GKG-less"></a><div class="flushleft">There are <a href="GKG-less.tgz">17 such tests</a></div>
+<table class="c000 cellpadding1" border=1><tr><td class="c007">&nbsp;</td><td class="c006">Godel</td><td class="c006">Kylo</td><td class="c006">Model </td></tr>
+<tr><td class="c007"><a id="top@GKG-less-LBNExpNExp+ExpNExp" href="GKG-less-LBNExpNExp+ExpNExp.html">LBNExpNExp+ExpNExp</a></td><td class="c008">No, 0/320M</td><td class="c008">Ok, 3/3.8G</td><td class="c008"><span class="c002">Forbid</span> </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-STRx+LDCLRptex+db" href="GKG-less-STRx+LDCLRptex+db.html">STRx+LDCLRptex+db</a></td><td class="c008">No, 0/300M</td><td class="c008">Ok, 363k/3.3G</td><td class="c008"><span class="c002">Forbid</span> </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-STRx+STCLRptex+db" href="GKG-less-STRx+STCLRptex+db.html">STRx+STCLRptex+db</a></td><td class="c008">No, 0/300M</td><td class="c008">Ok, 265k/3.3G</td><td class="c008"><span class="c002">Forbid</span> </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-STRx+STCLRptex+db2" href="GKG-less-STRx+STCLRptex+db2.html">STRx+STCLRptex+db2</a></td><td class="c008">No, 0/300M</td><td class="c008">Ok, 2.1M/3.3G</td><td class="c008"><span class="c002">Forbid</span> </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-STRx+STCLRptex+db4" href="GKG-less-STRx+STCLRptex+db4.html">STRx+STCLRptex+db4</a></td><td class="c008">No, 0/300M</td><td class="c008">Ok, 30k/1.5G</td><td class="c008"><span class="c002">Forbid</span> </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-STRx+SWPptex+db5" href="GKG-less-STRx+SWPptex+db5.html">STRx+SWPptex+db5</a></td><td class="c008">No, 0/300M</td><td class="c008">Ok, 65k/1.5G</td><td class="c008"><span class="c002">Forbid</span> </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-STRx+SWPptexForbid" href="GKG-less-STRx+SWPptexForbid.html">STRx+SWPptexForbid</a></td><td class="c008">No, 0/460M</td><td class="c008">Ok, 48k/1.5G</td><td class="c008"><span class="c002">Forbid</span> </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-STRx+SWPptexForbid1" href="GKG-less-STRx+SWPptexForbid1.html">STRx+SWPptexForbid1</a></td><td class="c008">No, 0/460M</td><td class="c008">Ok, 338k/1.5G</td><td class="c008"><span class="c002">Forbid</span> </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-STRx+SWPptexForbid2" href="GKG-less-STRx+SWPptexForbid2.html">STRx+SWPptexForbid2</a></td><td class="c008">No, 0/460M</td><td class="c008">Ok, 380k/2.1G</td><td class="c008"><span class="c002">Forbid</span> </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-D15347-M-load-shoot+addr" href="GKG-less-D15347-M-load-shoot+addr.html">D15347-M-load-shoot+addr</a></td><td class="c008">No, 0/160M</td><td class="c008">Ok, 213/392M</td><td class="c008">Allow </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-D15347-M-load-shoot+ctrl" href="GKG-less-D15347-M-load-shoot+ctrl.html">D15347-M-load-shoot+ctrl</a></td><td class="c008">No, 0/160M</td><td class="c008">Ok, 195/392M</td><td class="c008">Allow </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-D15347-M-load-shoot+ctrlisb" href="GKG-less-D15347-M-load-shoot+ctrlisb.html">D15347-M-load-shoot+ctrlisb</a></td><td class="c008">No, 0/160M</td><td class="c008">Ok, 225/392M</td><td class="c008">Allow </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-D15347-M-load-shoot+po" href="GKG-less-D15347-M-load-shoot+po.html">D15347-M-load-shoot+po</a></td><td class="c008">No, 0/160M</td><td class="c008">Ok, 239/392M</td><td class="c008">Allow </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-D15347-M-load-shoot+po+AF" href="GKG-less-D15347-M-load-shoot+po+AF.html">D15347-M-load-shoot+po+AF</a></td><td class="c008">No, 0/160M</td><td class="c008">Ok, 252/392M</td><td class="c008">Allow </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-STRx+2LDSETptex+db" href="GKG-less-STRx+2LDSETptex+db.html">STRx+2LDSETptex+db</a></td><td class="c008">No, 0/300M</td><td class="c008">Ok, 42/3.3G</td><td class="c008"><span class="c002">Forbid</span> </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-STRx+2SWPptex+db2" href="GKG-less-STRx+2SWPptex+db2.html">STRx+2SWPptex+db2</a></td><td class="c008">No, 0/300M</td><td class="c008">Ok, 1/1.5G</td><td class="c008"><span class="c002">Forbid</span> </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+<tr><td class="c007"><a id="top@GKG-less-STRx+2SWPptex+db3" href="GKG-less-STRx+2SWPptex+db3.html">STRx+2SWPptex+db3</a></td><td class="c008">No, 0/300M</td><td class="c008">Ok, 5/1.5G</td><td class="c008"><span class="c002">Forbid</span> </td></tr>
+<tr><td class="c007">&nbsp;</td><td class="c008"><span class="c001">Allow unseen</span></td><td class="c008">&nbsp;</td><td class="c008">&nbsp;</td></tr>
+</table></div><hr>
+<a href="specific.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="new.html"><img src="next_motif.svg" alt="Next"></a>
+</body>
+</html>

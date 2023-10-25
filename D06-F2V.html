@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test F2V</title>
+</head>
+<body>
+
+<h3><a id="tst@D06-F2V">Test</a> <a href="D06-src/F2V.litmus">F2V</a></h3>
+<img src="D06-img/F2V-00.png">
+<pre class="verbatim">AArch64 F2V
+{
+[PTE(x)]=(valid:0);
+0:X1=(oa:PA(x),valid:1);
+0:X2=PTE(x); 0:X3=x;
+1:X3=x
+}
+
+P0                 | P1               ;
+   STR  X1,[X2]    |    MOV  W4,#1    ;
+   DSB  ISH        |    STR  W4, [X3] ; (* new permissions *)
+   LSR  X9,X3,#12  | L0:STR  W4, [X3] ; (* old permissions *)
+   TLBI VAAE1IS,X9 |                  ;
+   DSB  ISH        |                  ;
+   LDR  W7,[X3]    |                  ;
+exists (0:X7=1 /\ fault(P1:L0,x,MMU:Translation))
+</pre></body>
+</html>

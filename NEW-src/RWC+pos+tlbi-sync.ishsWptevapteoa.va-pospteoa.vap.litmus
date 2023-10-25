@@ -1,0 +1,23 @@
+AArch64 RWC+pos+tlbi-sync.ishsWptevapteoa.va-pospteoa.vap
+"Rfe PosRR FrePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA PosWRPteOA.VAP Fre"
+Variant=imprecise
+Cycle=Rfe PosRR FrePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA PosWRPteOA.VAP Fre
+Relax=[PteVA,TLBI-sync.ISHsWW,PteOA,PteVA]
+Safe=Rfe Fre PosWR PosRR
+Generator=diy7 (version 7.56+02~dev)
+Com=Rf Fr Fr
+Orig=Rfe PosRR FrePPteVA TLBI-sync.ISHsWWPteVAPteOA.VA PosWRPteOA.VAP Fre
+{ int x=0; int y=4;
+0:X1=x;
+1:X0=x;
+2:X0=PTE(x); 2:X1=(oa:PA(x), valid:0); 2:X2=(oa:PA(y)); 2:X3=x;
+}
+ P0          | P1          | P2              ;
+ MOV W0,#1   | LDR W1,[X0] | STR X1,[X0]     ;
+ STR W0,[X1] | LDR W2,[X0] | LSR X5,X3,#12   ;
+             |             | DSB ISH         ;
+             |             | TLBI VAAE1IS,X5 ;
+             |             | DSB ISH         ;
+             |             | STR X2,[X0]     ;
+             |             | LDR W4,[X3]     ;
+exists (1:X1=4 /\ 1:X2=1 /\ 2:X4=1 /\ fault(P0,x,MMU:Translation) /\ fault(P2,x,MMU:Translation) /\ ~fault(P1,x)) \/ (1:X1=4 /\ 1:X2=1 /\ 2:X4=4 /\ fault(P0,x,MMU:Translation) /\ ~fault(P1,x) /\ ~fault(P2,x)) \/ (1:X1=4 /\ 1:X2=1 /\ 2:X4=4 /\ fault(P0,x,MMU:Translation) /\ fault(P1,x,MMU:Translation) /\ fault(P2,x,MMU:Translation))

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test RaRandPTEvalidation</title>
+</head>
+<body>
+
+<h3><a id="tst@D06-RaRandPTEValidation">Test</a> <a href="D06-src/RaRandPTEValidation.litmus">RaRandPTEvalidation</a></h3>
+<img src="D06-img/RaRandPTEValidation-00.png">
+<pre class="verbatim">AArch64 RaRandPTEvalidation
+{
+0:X1=x;
+1:X3=pte_x;
+pte_x=(valid:0);
+1:X0=(oa:phy_x,valid:1);
+x=1;
+1:X1=x;
+}
+P0             | P1             ;
+L1:LDR W2,[X1] | STR X0,[X3]    ;
+L0:LDR W4,[X1] |                ;
+exists (0:X2=1 /\ fault(P0:L0,x,MMU:Translation))
+</pre></body>
+</html>

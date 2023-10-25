@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test W+WW+R+posptevap-[dsb.ish]-[isb]+PteVAPte</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-W+WW+R+posptevap-[dsb.ish]-[isb]+PteVAPte">Test</a> <a href="unseen-src/W+WW+R+posptevap-[dsb.ish]-[isb]+PteVAPte.litmus">W+WW+R+posptevap-[dsb.ish]-[isb]+PteVAPte</a></h3>
+<img src="unseen-img/W+WW+R+posptevap-[dsb.ish]-[isb]+PteVAPte-00.png"> <img src="unseen-img/W+WW+R+posptevap-[dsb.ish]-[isb]+PteVAPte-01.png"> <img src="unseen-img/W+WW+R+posptevap-[dsb.ish]-[isb]+PteVAPte-02.png"> <img src="unseen-img/W+WW+R+posptevap-[dsb.ish]-[isb]+PteVAPte-03.png">
+<pre class="verbatim">AArch64 W+WW+R+posptevap-[dsb.ish]-[isb]+PteVAPte
+"CoePteVAPteVA PosWWPteVAP DSB.ISH ISB RfePPte FrePtePteVA"
+variant=precise
+Cycle=ISB RfePPte FrePtePteVA CoePteVAPteVA PosWWPteVAP DSB.ISH
+Relax=Pte PteVA
+Safe=Rfe Fre Coe [PosWW,DSB.ISH,ISB]
+Generator=diy7 (version 7.56+02~dev)
+Com=Co Rf Fr
+Orig=CoePteVAPteVA PosWWPteVAP DSB.ISH ISB RfePPte FrePtePteVA
+{
+pteval_t 2:X2; pteval_t 2:X1; pteval_t 0:X2;
+ int x=0;
+0:X0=PTE(x); 0:X1=(oa:PA(x), valid:0);
+1:X0=PTE(x); 1:X1=(oa:PA(x)); 1:X3=x;
+2:X0=PTE(x);
+}
+ P0          | P1          | P2          ;
+ STR X1,[X0] | STR X1,[X0] | LDR X1,[X0] ;
+ LDR X2,[X0] | DSB ISH     | LDR X2,[X0] ;
+             | ISB         |             ;
+             | MOV W2,#1   |             ;
+             | STR W2,[X3] |             ;
+exists (0:X2=(oa:PA(x), valid:0) /\ 2:X1=(oa:PA(x)) /\ 2:X2=(oa:PA(x), valid:0) /\ [x]=0 /\ fault(P1,x,MMU:Translation))
+</pre></body>
+</html>

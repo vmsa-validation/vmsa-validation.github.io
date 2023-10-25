@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test coWWExp-TLBI-NExp</title>
+</head>
+<body>
+
+<h3><a id="tst@unseen-coWWExp-TLBI-NExp">Test</a> <a href="unseen-src/coWWExp-TLBI-NExp.litmus">coWWExp-TLBI-NExp</a></h3>
+<img src="unseen-img/coWWExp-TLBI-NExp-00.png">
+<pre class="verbatim">AArch64 coWWExp-TLBI-NExp
+TTHM=HD
+{
+int x; int y;
+0:X1=pte_x;
+pte_x=(oa:phy_x,db:0,dbm:1,valid:1);
+0:X2=(oa:phy_y,db:0,dbm:1,valid:1);
+0:X4=x;
+}
+P0             ;
+STR X2,[X1]    ;
+DSB ISH        ;
+LSR X9,X4,#12  ;  
+TLBI VAAE1IS,X9;
+DSB ISH        ;
+MOV W3,#1      ;
+STR W3,[X4]    ;
+exists ([PTE(x)]=(oa:PA(y), dbm:1, db:0) /\ [x]=1)
+</pre></body>
+</html>

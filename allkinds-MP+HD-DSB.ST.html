@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test MP+HD-DSB.ST</title>
+</head>
+<body>
+
+<h3><a id="tst@allkinds-MP+HD-DSB.ST">Test</a> <a href="allkinds-src/MP+HD-DSB.ST.litmus">MP+HD-DSB.ST</a></h3>
+<img src="allkinds-img/MP+HD-DSB.ST-00.png">
+<pre class="verbatim">AArch64 MP+HD-DSB.ST
+TTHM=HD
+{
+pte_x=(oa:phy_x,db:0,dbm:1);
+
+0:X1=x;
+0:X2=1;
+0:X3=1;
+0:X4=y;
+
+1:X4=y;
+1:X1=pte_x;
+}
+P0          | P1          ;
+STR W2,[X1] | LDR W3,[X4] ;
+DSB ST      | DMB LD      ;
+STR W3,[X4] | LDR X2,[X1] ;
+exists(1:X3=1 /\ 1:X2=(oa:phy_x,db:0,dbm:1))
+</pre></body>
+</html>

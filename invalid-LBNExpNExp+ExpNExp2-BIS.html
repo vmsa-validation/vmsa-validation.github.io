@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.36">
+<link rel="stylesheet" type="text/css" href="text.css">
+<title>Test LBNExpNExp+ExpNExp2-BIS</title>
+</head>
+<body>
+
+<h3><a id="tst@invalid-LBNExpNExp+ExpNExp2-BIS">Test</a> <a href="invalid-src/LBNExpNExp+ExpNExp2-BIS.litmus">LBNExpNExp+ExpNExp2-BIS</a></h3>
+
+<pre class="verbatim">AArch64 LBNExpNExp+ExpNExp2-BIS
+TTHM=HA HD
+{
+pte_x=(db:0,dbm:1); 
+0:X3=x;
+1:X6=pte_x;
+1:X4=(db:0,dbm:1,oa:phy_y);
+x=1;
+int y;
+}
+P0          | P1         ;
+MOV W4,#2   | LDR X5,[X6]; 
+STR W4,[X3] | STR X4,[X6];
+exists (1:X5=(oa:PA(x), dbm:1) /\ [PTE(x)]=(oa:PA(y), dbm:1) /\ [y]=2)
+</pre></body>
+</html>
